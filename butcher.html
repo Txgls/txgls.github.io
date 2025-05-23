@@ -15,7 +15,7 @@
         
         body {
             font-family: 'Roboto', sans-serif;
-            background: linear-gradient(135deg, #1a1a1a 0%, #2d1810 100%);
+            background: linear-gradient(135deg, #1a1a1a 0%, #2d1012 100%);
             color: #fff;
             overflow-x: hidden;
             line-height: 1.6;
@@ -40,7 +40,7 @@
         .bg-circle {
             position: absolute;
             border-radius: 50%;
-            background: linear-gradient(45deg, rgba(139, 69, 19, 0.08), rgba(160, 82, 45, 0.08));
+            background: linear-gradient(45deg, rgba(139, 19, 19, 0.08), rgba(160, 45, 45, 0.08));
             animation: float 25s infinite ease-in-out;
         }
         
@@ -84,7 +84,7 @@
             backdrop-filter: blur(10px);
             padding: 15px 0;
             z-index: 1000;
-            border-bottom: 1px solid rgba(139, 69, 19, 0.3);
+            border-bottom: 1px solid rgba(220, 53, 69, 0.3);
         }
         
         .nav-content {
@@ -99,7 +99,7 @@
         .nav-logo {
             font-size: 1.5rem;
             font-weight: 700;
-            color: #ff6b35;
+            color: #dc3545;
             text-decoration: none;
         }
         
@@ -116,14 +116,14 @@
         }
         
         .nav-links a:hover {
-            color: #ff6b35;
+            color: #dc3545;
         }
         
         /* Hero Section */
         .hero {
             padding: 120px 20px 80px;
             text-align: center;
-            background: linear-gradient(45deg, rgba(139, 69, 19, 0.15), rgba(160, 82, 45, 0.15));
+            background: linear-gradient(45deg, rgba(139, 19, 19, 0.15), rgba(220, 53, 69, 0.15));
             backdrop-filter: blur(10px);
         }
         
@@ -135,20 +135,20 @@
         .hero-title {
             font-size: 4rem;
             font-weight: 800;
-            color: #ff6b35;
+            color: #dc3545;
             margin-bottom: 20px;
             text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
             animation: glow 3s ease-in-out infinite alternate;
         }
         
         @keyframes glow {
-            from { text-shadow: 2px 2px 4px rgba(0,0,0,0.5), 0 0 20px rgba(255, 107, 53, 0.4); }
-            to { text-shadow: 2px 2px 4px rgba(0,0,0,0.5), 0 0 40px rgba(255, 107, 53, 0.8); }
+            from { text-shadow: 2px 2px 4px rgba(0,0,0,0.5), 0 0 20px rgba(220, 53, 69, 0.4); }
+            to { text-shadow: 2px 2px 4px rgba(0,0,0,0.5), 0 0 40px rgba(220, 53, 69, 0.8); }
         }
         
         .hero-subtitle {
             font-size: 1.5rem;
-            color: #d4af37;
+            color: #f8d7da;
             margin-bottom: 30px;
             font-weight: 300;
         }
@@ -182,28 +182,28 @@
         }
         
         .btn-primary {
-            background: linear-gradient(45deg, #ff6b35, #ff8c42);
+            background: linear-gradient(45deg, #dc3545, #e74c3c);
             color: white;
             border: 2px solid transparent;
         }
         
         .btn-primary:hover {
-            background: linear-gradient(45deg, #ff8c42, #ff6b35);
+            background: linear-gradient(45deg, #e74c3c, #dc3545);
             transform: translateY(-3px);
-            box-shadow: 0 15px 30px rgba(255, 107, 53, 0.4);
+            box-shadow: 0 15px 30px rgba(220, 53, 69, 0.4);
         }
         
         .btn-secondary {
             background: transparent;
-            color: #d4af37;
-            border: 2px solid #d4af37;
+            color: #f8d7da;
+            border: 2px solid #f8d7da;
         }
         
         .btn-secondary:hover {
-            background: #d4af37;
+            background: #f8d7da;
             color: #1a1a1a;
             transform: translateY(-3px);
-            box-shadow: 0 15px 30px rgba(212, 175, 55, 0.3);
+            box-shadow: 0 15px 30px rgba(248, 215, 218, 0.3);
         }
         
         /* Video Section */
@@ -230,7 +230,7 @@
         
         .video-title {
             font-size: 2.5rem;
-            color: #ff6b35;
+            color: #dc3545;
             margin-bottom: 30px;
             font-weight: 600;
         }
@@ -245,7 +245,7 @@
         .section-title {
             text-align: center;
             font-size: 2.8rem;
-            color: #ff6b35;
+            color: #dc3545;
             margin-bottom: 60px;
             font-weight: 600;
         }
@@ -259,7 +259,7 @@
         .feature-card {
             background: linear-gradient(145deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
             backdrop-filter: blur(15px);
-            border: 1px solid rgba(139, 69, 19, 0.3);
+            border: 1px solid rgba(220, 53, 69, 0.3);
             border-radius: 20px;
             padding: 40px;
             transition: all 0.4s ease;
@@ -274,7 +274,7 @@
             left: -50%;
             width: 200%;
             height: 200%;
-            background: linear-gradient(45deg, transparent, rgba(255, 107, 53, 0.1), transparent);
+            background: linear-gradient(45deg, transparent, rgba(220, 53, 69, 0.1), transparent);
             transform: rotate(45deg);
             transition: all 0.8s ease;
             opacity: 0;
@@ -287,8 +287,8 @@
         
         .feature-card:hover {
             transform: translateY(-15px) scale(1.02);
-            border-color: rgba(255, 107, 53, 0.6);
-            box-shadow: 0 25px 50px rgba(255, 107, 53, 0.25);
+            border-color: rgba(220, 53, 69, 0.6);
+            box-shadow: 0 25px 50px rgba(220, 53, 69, 0.25);
         }
         
         @keyframes shine {
@@ -298,7 +298,7 @@
         
         .feature-icon {
             font-size: 4rem;
-            color: #d4af37;
+            color: #f8d7da;
             margin-bottom: 25px;
             display: block;
             text-align: center;
@@ -306,7 +306,7 @@
         
         .feature-title {
             font-size: 1.8rem;
-            color: #ff6b35;
+            color: #dc3545;
             margin-bottom: 20px;
             font-weight: 600;
             text-align: center;
@@ -321,7 +321,7 @@
         
         /* Specs Section */
         .specs {
-            background: linear-gradient(45deg, rgba(139, 69, 19, 0.2), rgba(160, 82, 45, 0.2));
+            background: linear-gradient(45deg, rgba(139, 19, 19, 0.2), rgba(220, 53, 69, 0.2));
             padding: 80px 20px;
         }
         
@@ -338,11 +338,11 @@
             backdrop-filter: blur(10px);
             border-radius: 15px;
             padding: 40px;
-            border: 1px solid rgba(139, 69, 19, 0.3);
+            border: 1px solid rgba(220, 53, 69, 0.3);
         }
         
         .specs-list h3 {
-            color: #d4af37;
+            color: #f8d7da;
             font-size: 1.8rem;
             margin-bottom: 25px;
             text-align: center;
@@ -357,7 +357,7 @@
         .specs-list li {
             color: #ccc;
             padding: 12px 0;
-            border-bottom: 1px solid rgba(139, 69, 19, 0.2);
+            border-bottom: 1px solid rgba(220, 53, 69, 0.2);
             display: flex;
             align-items: center;
             font-size: 1.1rem;
@@ -369,7 +369,7 @@
         
         .specs-list li::before {
             content: '⚡';
-            color: #ff6b35;
+            color: #dc3545;
             margin-right: 15px;
             font-size: 1.3rem;
         }
@@ -378,7 +378,7 @@
         .purchase {
             padding: 80px 20px;
             text-align: center;
-            background: linear-gradient(135deg, rgba(255, 107, 53, 0.1), rgba(212, 175, 55, 0.1));
+            background: linear-gradient(135deg, rgba(220, 53, 69, 0.1), rgba(248, 215, 218, 0.1));
         }
         
         .purchase-content {
@@ -388,7 +388,7 @@
         
         .purchase-title {
             font-size: 2.5rem;
-            color: #ff6b35;
+            color: #dc3545;
             margin-bottom: 20px;
             font-weight: 700;
         }
@@ -405,7 +405,7 @@
             background: #1a1a1a;
             padding: 40px 20px;
             text-align: center;
-            border-top: 2px solid rgba(139, 69, 19, 0.3);
+            border-top: 2px solid rgba(220, 53, 69, 0.3);
         }
         
         .footer-text {
@@ -414,7 +414,7 @@
         }
         
         .footer-highlight {
-            color: #ff6b35;
+            color: #dc3545;
             font-weight: 600;
         }
         
@@ -637,7 +637,7 @@
             <div class="purchase-content fade-in">
                 <h2 class="purchase-title">Ready to Get Started?</h2>
                 <p class="purchase-desc">
-                    Join hundreds of satisfied server owners who have transformed their roleplay 
+                    Join satisfied server owners who have transformed their roleplay 
                     experience with Txgls ButcherJob. Contact us today for pricing and installation support.
                 </p>
                 <div class="cta-buttons">
@@ -648,8 +648,7 @@
                         📖 Documentation
                     </a>
                 </div>
-            </div>
-        </section>
+            </section>
         
         <footer class="footer">
             <p class="footer-text">

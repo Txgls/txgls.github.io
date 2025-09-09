@@ -1,0 +1,888 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Togls Development - Minecraft Plugin Collection</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #4CAF50;
+            --secondary: #2E7D32;
+            --accent: #66BB6A;
+            --dark: #0a0a0a;
+            --darker: #050505;
+            --light: #ffffff;
+            --text: #e0e0e0;
+            --text-muted: #a0a0a0;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--darker);
+            color: var(--text);
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+
+        .container {
+            min-height: 100vh;
+            position: relative;
+            background: radial-gradient(ellipse at top left, rgba(76, 175, 80, 0.1) 0%, transparent 50%), radial-gradient(ellipse at bottom right, rgba(46, 125, 50, 0.08) 0%, transparent 50%), linear-gradient(180deg, var(--darker) 0%, var(--dark) 100%);
+        }
+
+        .bg-elements {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+            overflow: hidden;
+        }
+
+        .bg-grid {
+            position: absolute;
+            width: 200%;
+            height: 200%;
+            top: -50%;
+            left: -50%;
+            background-image: linear-gradient(rgba(76, 175, 80, 0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(76, 175, 80, 0.03) 1px, transparent 1px);
+            background-size: 100px 100px;
+            animation: gridMove 30s linear infinite;
+        }
+
+        @keyframes gridMove {
+            0% {
+                transform: translate(0, 0);
+            }
+
+            100% {
+                transform: translate(50px, 50px);
+            }
+        }
+
+        .bg-orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(100px);
+            opacity: 0.4;
+            animation: orbitFloat 20s infinite ease-in-out;
+        }
+
+            .bg-orb:nth-child(2) {
+                width: 600px;
+                height: 600px;
+                background: radial-gradient(circle, var(--primary), transparent);
+                top: -20%;
+                right: -10%;
+                animation-duration: 25s;
+            }
+
+            .bg-orb:nth-child(3) {
+                width: 400px;
+                height: 400px;
+                background: radial-gradient(circle, var(--secondary), transparent);
+                bottom: -10%;
+                left: -5%;
+                animation-duration: 30s;
+                animation-delay: -10s;
+            }
+
+        @keyframes orbitFloat {
+            0%, 100% {
+                transform: translate(0, 0) scale(1);
+            }
+
+            33% {
+                transform: translate(30px, -30px) scale(1.1);
+            }
+
+            66% {
+                transform: translate(-20px, 20px) scale(0.95);
+            }
+        }
+
+        .header {
+            position: relative;
+            text-align: center;
+            padding: 120px 20px 100px;
+            z-index: 2;
+            background: radial-gradient(ellipse at center, rgba(76, 175, 80, 0.1) 0%, transparent 70%);
+        }
+
+            .header::before {
+                content: '';
+                position: absolute;
+                top: 0;
+                left: 0;
+                right: 0;
+                height: 1px;
+                background: linear-gradient(90deg, transparent, var(--primary), transparent);
+                animation: shimmer 3s infinite;
+            }
+
+        @keyframes shimmer {
+            0% {
+                opacity: 0.3;
+            }
+
+            50% {
+                opacity: 0.8;
+            }
+
+            100% {
+                opacity: 0.3;
+            }
+        }
+
+        .logo {
+            font-size: 5rem;
+            font-weight: 900;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 50%, var(--secondary) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 20px;
+            letter-spacing: -2px;
+            animation: logoFloat 4s ease-in-out infinite;
+            position: relative;
+            display: inline-block;
+        }
+
+            .logo::before {
+                content: '⛏️ Minecraft Plugins';
+                position: absolute;
+                top: 0;
+                left: 0;
+                z-index: -1;
+                background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 50%, var(--secondary) 100%);
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
+                background-clip: text;
+                filter: blur(25px);
+                opacity: 0.5;
+            }
+
+        @keyframes logoFloat {
+            0%, 100% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(-10px);
+            }
+        }
+
+        .subtitle {
+            font-size: 1.5rem;
+            color: var(--secondary);
+            font-weight: 600;
+            margin-bottom: 30px;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            opacity: 0.9;
+        }
+
+        .description {
+            font-size: 1.2rem;
+            color: var(--text);
+            max-width: 800px;
+            margin: 0 auto;
+            line-height: 1.8;
+            opacity: 0.8;
+            font-weight: 300;
+        }
+
+        .discord-button {
+            position: fixed;
+            top: 40px;
+            right: 40px;
+            background: #5865F2;
+            color: white;
+            text-decoration: none;
+            padding: 16px;
+            border-radius: 50%;
+            width: 56px;
+            height: 56px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 10px 30px rgba(88, 101, 242, 0.3);
+            z-index: 1000;
+            overflow: hidden;
+        }
+
+            .discord-button::before {
+                content: '';
+                position: absolute;
+                top: 0;
+                left: -100%;
+                width: 100%;
+                height: 100%;
+                background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+                transition: left 0.6s;
+            }
+
+            .discord-button:hover::before {
+                left: 100%;
+            }
+
+            .discord-button:hover {
+                transform: translateY(-5px) scale(1.05);
+                box-shadow: 0 15px 40px rgba(88, 101, 242, 0.4);
+                background: #6874F5;
+            }
+
+        .discord-logo {
+            width: 24px;
+            height: 24px;
+            fill: white;
+        }
+
+        .plugins {
+            padding: 120px 20px;
+            max-width: 1400px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 2;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 3.5rem;
+            font-weight: 800;
+            margin-bottom: 80px;
+            position: relative;
+            letter-spacing: -1px;
+        }
+
+            .section-title span {
+                background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
+                background-clip: text;
+            }
+
+            .section-title::after {
+                content: '';
+                position: absolute;
+                bottom: -20px;
+                left: 50%;
+                transform: translateX(-50%);
+                width: 150px;
+                height: 4px;
+                background: linear-gradient(90deg, transparent, var(--primary), var(--accent), transparent);
+                border-radius: 2px;
+            }
+
+        .plugins-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 40px;
+            margin-bottom: 100px;
+        }
+
+        .plugin-card {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.03), rgba(255, 255, 255, 0.01));
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 40px 30px;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
+            text-decoration: none;
+            color: inherit;
+            display: block;
+        }
+
+            .plugin-card::before {
+                content: '';
+                position: absolute;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                background: radial-gradient(circle at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(76, 175, 80, 0.1) 0%, transparent 50%);
+                opacity: 0;
+                transition: opacity 0.3s;
+                pointer-events: none;
+            }
+
+            .plugin-card:hover::before {
+                opacity: 1;
+            }
+
+            .plugin-card:hover {
+                transform: translateY(-15px) scale(1.02);
+                border-color: rgba(76, 175, 80, 0.3);
+                box-shadow: 0 30px 60px rgba(0, 0, 0, 0.4), 0 0 100px rgba(76, 175, 80, 0.1), inset 0 0 30px rgba(76, 175, 80, 0.05);
+            }
+
+        .plugin-icon {
+            font-size: 3.5rem;
+            margin-bottom: 25px;
+            display: block;
+            text-align: center;
+            filter: drop-shadow(0 10px 20px rgba(0, 0, 0, 0.3));
+            animation: iconPulse 3s ease-in-out infinite;
+        }
+
+        @keyframes iconPulse {
+            0%, 100% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.1);
+            }
+        }
+
+        .plugin-title {
+            font-size: 1.8rem;
+            font-weight: 800;
+            margin-bottom: 10px;
+            text-align: center;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .plugin-subtitle {
+            font-size: 1.1rem;
+            color: var(--secondary);
+            margin-bottom: 20px;
+            text-align: center;
+            font-weight: 500;
+            opacity: 0.9;
+        }
+
+        .plugin-desc {
+            color: var(--text);
+            line-height: 1.6;
+            font-size: 1rem;
+            text-align: center;
+            margin-bottom: 30px;
+            opacity: 0.8;
+        }
+
+        .features-list {
+            list-style: none;
+            padding: 0;
+            margin-bottom: 30px;
+        }
+
+            .features-list li {
+                color: var(--text-muted);
+                padding: 10px 0;
+                border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+                display: flex;
+                align-items: center;
+                transition: all 0.3s ease;
+                font-size: 0.95rem;
+            }
+
+                .features-list li:last-child {
+                    border-bottom: none;
+                }
+
+                .features-list li::before {
+                    content: '';
+                    width: 18px;
+                    height: 18px;
+                    margin-right: 15px;
+                    background: linear-gradient(135deg, var(--primary), var(--accent));
+                    border-radius: 50%;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    position: relative;
+                }
+
+                .features-list li::after {
+                    content: '✓';
+                    position: absolute;
+                    left: 5px;
+                    color: white;
+                    font-weight: bold;
+                    font-size: 12px;
+                }
+
+        .plugin-card:hover .features-list li {
+            color: var(--text);
+            transform: translateX(10px);
+        }
+
+        .cta-button {
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            border: none;
+            padding: 15px 30px;
+            border-radius: 100px;
+            color: white;
+            font-weight: 700;
+            font-size: 1rem;
+            width: 100%;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 8px 25px rgba(76, 175, 80, 0.3);
+        }
+
+            .cta-button::before {
+                content: '';
+                position: absolute;
+                top: 0;
+                left: -100%;
+                width: 100%;
+                height: 100%;
+                background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+                transition: left 0.6s;
+            }
+
+        .plugin-card:hover .cta-button::before {
+            left: 100%;
+        }
+
+        .plugin-card:hover .cta-button {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(76, 175, 80, 0.4);
+        }
+
+        .stats {
+            background: linear-gradient(180deg, transparent, rgba(76, 175, 80, 0.05), transparent);
+            padding: 120px 20px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+            .stats::before {
+                content: '';
+                position: absolute;
+                top: 0;
+                left: 0;
+                right: 0;
+                height: 1px;
+                background: linear-gradient(90deg, transparent, rgba(76, 175, 80, 0.3), transparent);
+            }
+
+            .stats::after {
+                content: '';
+                position: absolute;
+                bottom: 0;
+                left: 0;
+                right: 0;
+                height: 1px;
+                background: linear-gradient(90deg, transparent, rgba(76, 175, 80, 0.3), transparent);
+            }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 60px;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .stat-item {
+            padding: 50px 30px;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.03), rgba(255, 255, 255, 0.01));
+            border-radius: 30px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+            overflow: hidden;
+        }
+
+            .stat-item::before {
+                content: '';
+                position: absolute;
+                top: -50%;
+                left: -50%;
+                width: 200%;
+                height: 200%;
+                background: radial-gradient(circle, rgba(76, 175, 80, 0.1) 0%, transparent 70%);
+                opacity: 0;
+                transition: opacity 0.3s;
+            }
+
+            .stat-item:hover::before {
+                opacity: 1;
+            }
+
+            .stat-item:hover {
+                transform: translateY(-10px) scale(1.05);
+                box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+                border-color: rgba(76, 175, 80, 0.3);
+            }
+
+        .stat-number {
+            font-size: 4rem;
+            font-weight: 900;
+            background: linear-gradient(135deg, var(--secondary) 0%, var(--primary) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            display: block;
+            margin-bottom: 20px;
+            line-height: 1;
+        }
+
+        .stat-label {
+            color: var(--text);
+            font-size: 1.2rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-weight: 600;
+            opacity: 0.8;
+        }
+
+        .footer {
+            background: linear-gradient(180deg, transparent, var(--darker));
+            padding: 80px 20px 40px;
+            text-align: center;
+            position: relative;
+        }
+
+            .footer::before {
+                content: '';
+                position: absolute;
+                top: 0;
+                left: 0;
+                right: 0;
+                height: 1px;
+                background: linear-gradient(90deg, transparent, rgba(76, 175, 80, 0.2), transparent);
+            }
+
+        .footer-text {
+            color: var(--text-muted);
+            font-size: 1.1rem;
+            line-height: 2;
+            font-weight: 400;
+        }
+
+        .footer-highlight {
+            color: var(--primary);
+            font-weight: 700;
+            position: relative;
+            display: inline-block;
+            transition: all 0.3s ease;
+        }
+
+            .footer-highlight:hover {
+                color: var(--accent);
+                transform: translateY(-2px);
+            }
+
+        @media (max-width: 768px) {
+            .discord-button {
+                top: 20px;
+                right: 20px;
+                width: 48px;
+                height: 48px;
+                padding: 12px;
+            }
+
+            .logo {
+                font-size: 3.5rem;
+            }
+
+            .section-title {
+                font-size: 2.5rem;
+            }
+
+            .plugins-grid {
+                grid-template-columns: 1fr;
+                gap: 30px;
+            }
+
+            .plugin-card {
+                padding: 30px 25px;
+            }
+
+            .plugin-title {
+                font-size: 1.6rem;
+            }
+
+            .stat-number {
+                font-size: 3rem;
+            }
+
+            .header {
+                padding: 80px 20px 60px;
+            }
+        }
+
+        @media (max-width: 1024px) {
+            .plugins-grid {
+                grid-template-columns: 1fr;
+                gap: 35px;
+            }
+        }
+
+        .fade-in {
+            opacity: 0;
+            transform: translateY(50px);
+            transition: all 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+            .fade-in.visible {
+                opacity: 1;
+                transform: translateY(0);
+            }
+
+            .fade-in:nth-child(1) {
+                transition-delay: 0.1s;
+            }
+
+            .fade-in:nth-child(2) {
+                transition-delay: 0.2s;
+            }
+
+            .fade-in:nth-child(3) {
+                transition-delay: 0.3s;
+            }
+
+            .fade-in:nth-child(4) {
+                transition-delay: 0.4s;
+            }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="bg-elements">
+            <div class="bg-grid"></div>
+            <div class="bg-orb"></div>
+            <div class="bg-orb"></div>
+        </div>
+
+        <a href="https://discord.gg/4cV7Tu7ESu" target="_blank" class="discord-button" title="Join our Discord">
+            <svg class="discord-logo" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path d="M20.317 4.3698a19.7913 19.7913 0 00-4.8851-1.5152.0741.0741 0 00-.0785.0371c-.211.3753-.4447.8648-.6083 1.2495-1.8447-.2762-3.68-.2762-5.4868 0-.1636-.3933-.4058-.8742-.6177-1.2495a.077.077 0 00-.0785-.037 19.7363 19.7363 0 00-4.8852 1.515.0699.0699 0 00-.0321.0277C.5334 9.0458-.319 13.5799.0992 18.0578a.0824.0824 0 00.0312.0561c2.0528 1.5076 4.0413 2.4228 5.9929 3.0294a.0777.0777 0 00.0842-.0276c.4616-.6304.8731-1.2952 1.226-1.9942a.076.076 0 00-.0416-.1057c-.6528-.2476-1.2743-.5495-1.8722-.8923a.077.077 0 01-.0076-.1277c.1258-.0943.2517-.1923.3718-.2914a.0743.0743 0 01.0776-.0105c3.9278 1.7933 8.18 1.7933 12.0614 0a.0739.0739 0 01.0785.0095c.1202.099.246.1981.3728.2924a.077.077 0 01-.0066.1276 12.2986 12.2986 0 01-1.873.8914.0766.0766 0 00-.0407.1067c.3604.698.7719 1.3628 1.225 1.9932a.076.076 0 00.0842.0286c1.961-.6067 3.9495-1.5219 6.0023-3.0294a.077.077 0 00.0313-.0552c.5004-5.177-.8382-9.6739-3.5485-13.6604a.061.061 0 00-.0312-.0286zM8.02 15.3312c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9555-2.4189 2.157-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.9555 2.4189-2.1569 2.4189zm7.9748 0c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9554-2.4189 2.1569-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.946 2.4189-2.1568 2.4189Z" />
+            </svg>
+        </a>
+
+        <header class="header">
+            <h1 class="logo">⛏️ Minecraft Plugins</h1>
+            <p class="subtitle">Premium Minecraft Plugin Collection</p>
+            <p class="description">
+                Professional, optimized, and feature-rich plugins designed specifically for Minecraft servers.
+                Enhance your server experience with carefully crafted solutions by Togls Development.
+            </p>
+        </header>
+
+        <section class="plugins">
+            <h2 class="section-title fade-in"><span>Available Plugins</span></h2>
+            <div class="plugins-grid">
+                <a href="mmorpgclasses.html" class="plugin-card fade-in">
+                    <span class="plugin-icon">⚔️</span>
+                    <h3 class="plugin-title">MMORPGClasses</h3>
+                    <p class="plugin-subtitle">Advanced Class System</p>
+                    <p class="plugin-desc">
+                        Comprehensive class-based RPG system with unique abilities, skill trees, and progression mechanics for immersive gameplay.
+                    </p>
+                    <ul class="features-list">
+                        <li>Multiple Unique Classes</li>
+                        <li>Skill Tree Progression</li>
+                        <li>Custom Abilities & Spells</li>
+                        <li>Balanced PvP Combat</li>
+                        <li>Extensive Customization</li>
+                    </ul>
+                    <button class="cta-button">View Details</button>
+                </a>
+
+                <a href="mythicclans.html" class="plugin-card fade-in">
+                    <span class="plugin-icon">🛡️</span>
+                    <h3 class="plugin-title">MythicClans</h3>
+                    <p class="plugin-subtitle">Clan Management System</p>
+                    <p class="plugin-desc">
+                        Advanced clan management plugin with territory control, clan wars, rankings, and social features for community building.
+                    </p>
+                    <ul class="features-list">
+                        <li>Territory Control System</li>
+                        <li>Clan Wars & Battles</li>
+                        <li>Ranking & Leaderboards</li>
+                        <li>Economy Integration</li>
+                        <li>Social Features</li>
+                    </ul>
+                    <button class="cta-button">View Details</button>
+                </a>
+
+                <a href="vampyrreborn.html" class="plugin-card fade-in">
+                    <span class="plugin-icon">🧛</span>
+                    <h3 class="plugin-title">VampyrReborn</h3>
+                    <p class="plugin-subtitle">Vampire Transformation</p>
+                    <p class="plugin-desc">
+                        Immersive vampire plugin with transformation mechanics, supernatural abilities, weaknesses, and bloodline systems.
+                    </p>
+                    <ul class="features-list">
+                        <li>Vampire Transformation</li>
+                        <li>Supernatural Abilities</li>
+                        <li>Bloodline Systems</li>
+                        <li>Day/Night Mechanics</li>
+                        <li>Blood & Feeding System</li>
+                    </ul>
+                    <button class="cta-button">View Details</button>
+                </a>
+            </div>
+        </section>
+
+        <section class="stats">
+            <h2 class="section-title fade-in"><span>Why Choose Togls Minecraft Plugins?</span></h2>
+            <div class="stats-grid">
+                <div class="stat-item fade-in">
+                    <span class="stat-number">100%</span>
+                    <span class="stat-label">Server Compatible</span>
+                </div>
+                <div class="stat-item fade-in">
+                    <span class="stat-number">24/7</span>
+                    <span class="stat-label">Support Available</span>
+                </div>
+                <div class="stat-item fade-in">
+                    <span class="stat-number">∞</span>
+                    <span class="stat-label">Customization Options</span>
+                </div>
+            </div>
+        </section>
+
+        <footer class="footer">
+            <p class="footer-text">
+                Created by <span class="footer-highlight">Togls</span> |
+                For <span class="footer-highlight">Minecraft Servers</span> |
+                Premium Plugin Collection
+            </p>
+        </footer>
+    </div>
+
+    <script>
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -100px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+
+                    // Trigger counter animation for stats
+                    if (entry.target.classList.contains('stat-item')) {
+                        const number = entry.target.querySelector('.stat-number');
+                        const text = number.textContent;
+                        if (text === '100%') animateCounter(number, 100);
+                        else if (text === '24/7') animateCounter(number, 24);
+                    }
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.fade-in').forEach(el => {
+            observer.observe(el);
+        });
+
+        function animateCounter(element, target) {
+            let count = 0;
+            const increment = target / 50;
+            const timer = setInterval(() => {
+                count += increment;
+                if (count >= target) {
+                    element.textContent = target === 100 ? '100%' : '24/7';
+                    clearInterval(timer);
+                } else {
+                    element.textContent = Math.floor(count) + (target === 100 ? '%' : '');
+                }
+            }, 30);
+        }
+
+        document.querySelectorAll('.plugin-card').forEach(card => {
+            card.addEventListener('mousemove', (e) => {
+                const rect = card.getBoundingClientRect();
+                const x = ((e.clientX - rect.left) / rect.width) * 100;
+                const y = ((e.clientY - rect.top) / rect.height) * 100;
+                card.style.setProperty('--mouse-x', `${x}%`);
+                card.style.setProperty('--mouse-y', `${y}%`);
+            });
+        });
+
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        let ticking = false;
+        function updateParallax() {
+            const scrolled = window.pageYOffset;
+            const parallaxElements = document.querySelectorAll('.bg-orb');
+
+            parallaxElements.forEach((element, index) => {
+                const speed = 0.5 + (index * 0.2);
+                const yPos = -(scrolled * speed);
+                element.style.transform = `translateY(${yPos}px)`;
+            });
+
+            ticking = false;
+        }
+
+        function requestTick() {
+            if (!ticking) {
+                window.requestAnimationFrame(updateParallax);
+                ticking = true;
+            }
+        }
+
+        window.addEventListener('scroll', requestTick);
+
+        window.addEventListener('load', () => {
+            document.body.classList.add('loaded');
+        });
+
+        document.querySelectorAll('.stat-item').forEach((item, index) => {
+            item.addEventListener('mouseenter', () => {
+                item.style.animationDelay = `${index * 0.1}s`;
+            });
+        });
+
+        document.querySelectorAll('.plugin-icon').forEach(icon => {
+            icon.addEventListener('mouseenter', () => {
+                icon.style.animation = 'iconPulse 1s ease-in-out infinite, rotate 20s linear infinite';
+            });
+
+            icon.addEventListener('mouseleave', () => {
+                icon.style.animation = 'iconPulse 3s ease-in-out infinite';
+            });
+        });
+
+        let scrollTimeout;
+        window.addEventListener('scroll', () => {
+            if (scrollTimeout) {
+                window.cancelAnimationFrame(scrollTimeout);
+            }
+            scrollTimeout = window.requestAnimationFrame(() => {
+                requestTick();
+            });
+        });</script>
+</body>
+</html>

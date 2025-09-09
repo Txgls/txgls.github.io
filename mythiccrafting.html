@@ -1,0 +1,918 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MythicCrafting - Custom Crafting System | Togls Development</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #FFD700;
+            --secondary: #FFA500;
+            --accent: #FFFF66;
+            --dark: #0a0a0a;
+            --darker: #050505;
+            --light: #ffffff;
+            --text: #e0e0e0;
+            --text-muted: #a0a0a0;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--darker);
+            color: var(--text);
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+
+        .container {
+            min-height: 100vh;
+            position: relative;
+            background: radial-gradient(ellipse at top left, rgba(255, 215, 0, 0.1) 0%, transparent 50%), radial-gradient(ellipse at bottom right, rgba(255, 165, 0, 0.08) 0%, transparent 50%), linear-gradient(180deg, var(--darker) 0%, var(--dark) 100%);
+        }
+
+        /* Animated background */
+        .bg-elements {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+            overflow: hidden;
+        }
+
+        .bg-grid {
+            position: absolute;
+            width: 200%;
+            height: 200%;
+            top: -50%;
+            left: -50%;
+            background-image: linear-gradient(rgba(255, 215, 0, 0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(255, 215, 0, 0.03) 1px, transparent 1px);
+            background-size: 100px 100px;
+            animation: gridMove 30s linear infinite;
+        }
+
+        @keyframes gridMove {
+            0% {
+                transform: translate(0, 0);
+            }
+
+            100% {
+                transform: translate(50px, 50px);
+            }
+        }
+
+        .bg-orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(100px);
+            opacity: 0.4;
+            animation: orbitFloat 20s infinite ease-in-out;
+        }
+
+            .bg-orb:nth-child(2) {
+                width: 600px;
+                height: 600px;
+                background: radial-gradient(circle, var(--primary), transparent);
+                top: -20%;
+                right: -10%;
+                animation-duration: 25s;
+            }
+
+            .bg-orb:nth-child(3) {
+                width: 400px;
+                height: 400px;
+                background: radial-gradient(circle, var(--secondary), transparent);
+                bottom: -10%;
+                left: -5%;
+                animation-duration: 30s;
+                animation-delay: -10s;
+            }
+
+        @keyframes orbitFloat {
+            0%, 100% {
+                transform: translate(0, 0) scale(1);
+            }
+
+            33% {
+                transform: translate(30px, -30px) scale(1.1);
+            }
+
+            66% {
+                transform: translate(-20px, 20px) scale(0.95);
+            }
+        }
+
+        /* Back Button */
+        .back-button {
+            position: fixed;
+            top: 40px;
+            left: 40px;
+            background: var(--primary);
+            color: var(--dark);
+            text-decoration: none;
+            padding: 16px;
+            border-radius: 50%;
+            width: 56px;
+            height: 56px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 10px 30px rgba(255, 215, 0, 0.3);
+            z-index: 1000;
+            font-size: 1.2rem;
+            font-weight: 800;
+        }
+
+            .back-button:hover {
+                transform: translateY(-5px) scale(1.05);
+                box-shadow: 0 15px 40px rgba(255, 215, 0, 0.4);
+                background: var(--accent);
+            }
+
+        /* Discord Button */
+        .discord-button {
+            position: fixed;
+            top: 40px;
+            right: 40px;
+            background: #5865F2;
+            color: white;
+            text-decoration: none;
+            padding: 16px;
+            border-radius: 50%;
+            width: 56px;
+            height: 56px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 10px 30px rgba(88, 101, 242, 0.3);
+            z-index: 1000;
+            overflow: hidden;
+        }
+
+            .discord-button::before {
+                content: '';
+                position: absolute;
+                top: 0;
+                left: -100%;
+                width: 100%;
+                height: 100%;
+                background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+                transition: left 0.6s;
+            }
+
+            .discord-button:hover::before {
+                left: 100%;
+            }
+
+            .discord-button:hover {
+                transform: translateY(-5px) scale(1.05);
+                box-shadow: 0 15px 40px rgba(88, 101, 242, 0.4);
+                background: #6874F5;
+            }
+
+        .discord-logo {
+            width: 24px;
+            height: 24px;
+            fill: white;
+        }
+
+        /* Enhanced Header */
+        .header {
+            position: relative;
+            text-align: center;
+            padding: 120px 20px 80px;
+            z-index: 2;
+            background: radial-gradient(ellipse at center, rgba(255, 215, 0, 0.1) 0%, transparent 70%);
+        }
+
+            .header::before {
+                content: '';
+                position: absolute;
+                top: 0;
+                left: 0;
+                right: 0;
+                height: 1px;
+                background: linear-gradient(90deg, transparent, var(--primary), transparent);
+                animation: shimmer 3s infinite;
+            }
+
+        @keyframes shimmer {
+            0% {
+                opacity: 0.3;
+            }
+
+            50% {
+                opacity: 0.8;
+            }
+
+            100% {
+                opacity: 0.3;
+            }
+        }
+
+        .plugin-icon {
+            font-size: 6rem;
+            margin-bottom: 20px;
+            filter: drop-shadow(0 10px 30px rgba(0, 0, 0, 0.5));
+            animation: iconFloat 4s ease-in-out infinite;
+        }
+
+        @keyframes iconFloat {
+            0%, 100% {
+                transform: translateY(0) rotate(0deg);
+            }
+
+            50% {
+                transform: translateY(-10px) rotate(5deg);
+            }
+        }
+
+        .plugin-title {
+            font-size: 4rem;
+            font-weight: 900;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 50%, var(--secondary) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 10px;
+            letter-spacing: -2px;
+        }
+
+        .plugin-subtitle {
+            font-size: 1.5rem;
+            color: var(--secondary);
+            font-weight: 600;
+            margin-bottom: 30px;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            opacity: 0.9;
+        }
+
+        .plugin-description {
+            font-size: 1.2rem;
+            color: var(--text);
+            max-width: 800px;
+            margin: 0 auto;
+            line-height: 1.8;
+            opacity: 0.8;
+            font-weight: 300;
+        }
+
+        /* Content Sections */
+        .content-section {
+            padding: 80px 20px;
+            max-width: 1400px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 2;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 3rem;
+            font-weight: 800;
+            margin-bottom: 60px;
+            position: relative;
+            letter-spacing: -1px;
+        }
+
+            .section-title span {
+                background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
+                background-clip: text;
+            }
+
+            .section-title::after {
+                content: '';
+                position: absolute;
+                bottom: -15px;
+                left: 50%;
+                transform: translateX(-50%);
+                width: 100px;
+                height: 3px;
+                background: linear-gradient(90deg, transparent, var(--primary), var(--accent), transparent);
+                border-radius: 2px;
+            }
+
+        /* Crafting Steps Grid */
+        .steps-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+            margin-bottom: 80px;
+        }
+
+        .step-card {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.02));
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 30px;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+            overflow: hidden;
+            text-align: center;
+        }
+
+            .step-card::before {
+                content: '';
+                position: absolute;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                background: radial-gradient(circle at 50% 50%, rgba(255, 215, 0, 0.1) 0%, transparent 70%);
+                opacity: 0;
+                transition: opacity 0.3s;
+            }
+
+            .step-card:hover::before {
+                opacity: 1;
+            }
+
+            .step-card:hover {
+                transform: translateY(-10px);
+                border-color: rgba(255, 215, 0, 0.3);
+                box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+            }
+
+        .step-number {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border-radius: 50%;
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: var(--dark);
+            margin-bottom: 20px;
+        }
+
+        .step-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 15px;
+        }
+
+        .step-description {
+            color: var(--text-muted);
+            line-height: 1.6;
+            font-size: 0.95rem;
+        }
+
+        /* Commands & Permissions Sections */
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 40px;
+        }
+
+        .info-card {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.03), rgba(255, 255, 255, 0.01));
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 40px;
+            transition: all 0.3s ease;
+        }
+
+            .info-card:hover {
+                border-color: rgba(255, 215, 0, 0.3);
+                box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+            }
+
+        .info-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 25px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        /* Scrollable Commands Box */
+        .scrollable-commands {
+            max-height: 400px;
+            overflow-y: auto;
+            padding-right: 10px;
+        }
+
+            /* Custom Scrollbar */
+            .scrollable-commands::-webkit-scrollbar {
+                width: 8px;
+            }
+
+            .scrollable-commands::-webkit-scrollbar-track {
+                background: rgba(255, 255, 255, 0.05);
+                border-radius: 10px;
+            }
+
+            .scrollable-commands::-webkit-scrollbar-thumb {
+                background: var(--primary);
+                border-radius: 10px;
+                transition: background 0.3s ease;
+            }
+
+                .scrollable-commands::-webkit-scrollbar-thumb:hover {
+                    background: var(--accent);
+                }
+
+        .command-category {
+            margin-bottom: 30px;
+        }
+
+        .category-title {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--accent);
+            margin-bottom: 15px;
+            padding-bottom: 8px;
+            border-bottom: 2px solid rgba(255, 215, 0, 0.3);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .command-list, .permission-list {
+            list-style: none;
+            padding: 0;
+        }
+
+            .command-list li, .permission-list li {
+                padding: 12px 0;
+                border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+                font-family: 'Courier New', monospace;
+                font-size: 0.9rem;
+            }
+
+                .command-list li:last-child, .permission-list li:last-child {
+                    border-bottom: none;
+                }
+
+        .command {
+            color: var(--accent);
+            font-weight: 600;
+        }
+
+        .command-desc {
+            color: var(--text-muted);
+            margin-left: 10px;
+        }
+
+        .permission {
+            color: var(--primary);
+            font-weight: 600;
+        }
+
+        .permission-desc {
+            color: var(--text-muted);
+            margin-left: 10px;
+        }
+
+        /* Features Section */
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+        }
+
+        .feature-card {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.02));
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 30px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+            .feature-card:hover {
+                transform: translateY(-5px);
+                border-color: rgba(255, 215, 0, 0.3);
+                box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+            }
+
+        .feature-icon {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            filter: drop-shadow(0 5px 15px rgba(0, 0, 0, 0.3));
+        }
+
+        .feature-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 15px;
+        }
+
+        .feature-description {
+            color: var(--text-muted);
+            line-height: 1.6;
+        }
+
+        /* Stats Section */
+        .stats {
+            background: linear-gradient(180deg, transparent, rgba(255, 215, 0, 0.05), transparent);
+            padding: 80px 20px;
+            text-align: center;
+            position: relative;
+        }
+
+            .stats::before, .stats::after {
+                content: '';
+                position: absolute;
+                left: 0;
+                right: 0;
+                height: 1px;
+                background: linear-gradient(90deg, transparent, rgba(255, 215, 0, 0.3), transparent);
+            }
+
+            .stats::before {
+                top: 0;
+            }
+
+            .stats::after {
+                bottom: 0;
+            }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 40px;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .stat-item {
+            padding: 40px 20px;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.03), rgba(255, 255, 255, 0.01));
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+        }
+
+            .stat-item:hover {
+                transform: translateY(-5px) scale(1.02);
+                border-color: rgba(255, 215, 0, 0.3);
+                box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+            }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 900;
+            background: linear-gradient(135deg, var(--secondary) 0%, var(--primary) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 10px;
+        }
+
+        .stat-label {
+            color: var(--text);
+            font-size: 1rem;
+            font-weight: 600;
+            opacity: 0.8;
+        }
+
+        /* Enhanced Footer */
+        .footer {
+            background: linear-gradient(180deg, transparent, var(--darker));
+            padding: 60px 20px 40px;
+            text-align: center;
+            position: relative;
+        }
+
+            .footer::before {
+                content: '';
+                position: absolute;
+                top: 0;
+                left: 0;
+                right: 0;
+                height: 1px;
+                background: linear-gradient(90deg, transparent, rgba(255, 215, 0, 0.2), transparent);
+            }
+
+        .footer-text {
+            color: var(--text-muted);
+            font-size: 1rem;
+            line-height: 2;
+        }
+
+        .footer-highlight {
+            color: var(--primary);
+            font-weight: 700;
+            transition: all 0.3s ease;
+        }
+
+            .footer-highlight:hover {
+                color: var(--accent);
+            }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .back-button, .discord-button {
+                top: 20px;
+                width: 48px;
+                height: 48px;
+                padding: 12px;
+            }
+
+            .back-button {
+                left: 20px;
+            }
+
+            .discord-button {
+                right: 20px;
+            }
+
+            .plugin-title {
+                font-size: 2.5rem;
+            }
+
+            .section-title {
+                font-size: 2rem;
+            }
+
+            .steps-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .info-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .scrollable-commands {
+                max-height: 300px;
+            }
+        }
+
+        /* Loading Animation */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.6s ease;
+        }
+
+            .fade-in.visible {
+                opacity: 1;
+                transform: translateY(0);
+            }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="bg-elements">
+            <div class="bg-grid"></div>
+            <div class="bg-orb"></div>
+            <div class="bg-orb"></div>
+        </div>
+
+        <a href="minecraft.html" class="back-button" title="Back to Minecraft Plugins">←</a>
+
+        <a href="https://discord.gg/4cV7Tu7ESu" target="_blank" class="discord-button" title="Join our Discord">
+            <svg class="discord-logo" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path d="M20.317 4.3698a19.7913 19.7913 0 00-4.8851-1.5152.0741.0741 0 00-.0785.0371c-.211.3753-.4447.8648-.6083 1.2495-1.8447-.2762-3.68-.2762-5.4868 0-.1636-.3933-.4058-.8742-.6177-1.2495a.077.077 0 00-.0785-.037 19.7363 19.7363 0 00-4.8852 1.515.0699.0699 0 00-.0321.0277C.5334 9.0458-.319 13.5799.0992 18.0578a.0824.0824 0 00.0312.0561c2.0528 1.5076 4.0413 2.4228 5.9929 3.0294a.0777.0777 0 00.0842-.0276c.4616-.6304.8731-1.2952 1.226-1.9942a.076.076 0 00-.0416-.1057c-.6528-.2476-1.2743-.5495-1.8722-.8923a.077.077 0 01-.0076-.1277c.1258-.0943.2517-.1923.3718-.2914a.0743.0743 0 01.0776-.0105c3.9278 1.7933 8.18 1.7933 12.0614 0a.0739.0739 0 01.0785.0095c.1202.099.246.1981.3728.2924a.077.077 0 01-.0066.1276 12.2986 12.2986 0 01-1.873.8914.0766.0766 0 00-.0407.1067c.3604.698.7719 1.3628 1.225 1.9932a.076.076 0 00.0842.0286c1.961-.6067 3.9495-1.5219 6.0023-3.0294a.077.077 0 00.0313-.0552c.5004-5.177-.8382-9.6739-3.5485-13.6604a.061.061 0 00-.0312-.0286zM8.02 15.3312c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9555-2.4189 2.157-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.9555 2.4189-2.1569 2.4189zm7.9748 0c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9554-2.4189 2.1569-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.946 2.4189-2.1568 2.4189Z" />
+            </svg>
+        </a>
+
+        <header class="header">
+            <div class="plugin-icon">🔮</div>
+            <h1 class="plugin-title">MythicCrafting</h1>
+            <p class="plugin-subtitle">Custom Crafting System</p>
+            <p class="plugin-description">
+                Unleash unlimited creativity with the ultimate custom crafting system for Minecraft. Create unique recipes
+                with up to nine ingredients, design custom items with enchantments, and manage everything through an intuitive
+                GUI-based interface that requires zero configuration files.
+            </p>
+        </header>
+
+        <section class="content-section">
+            <h2 class="section-title fade-in"><span>How It Works</span></h2>
+            <div class="steps-grid">
+                <div class="step-card fade-in">
+                    <div class="step-number">1</div>
+                    <h3 class="step-title">Open Crafting GUI</h3>
+                    <p class="step-description">Use the /crafting command to access the intuitive in-game crafting interface. No configuration files needed!</p>
+                </div>
+                <div class="step-card fade-in">
+                    <div class="step-number">2</div>
+                    <h3 class="step-title">Design Your Recipe</h3>
+                    <p class="step-description">Place up to nine ingredients in the crafting grid to create your custom recipe pattern.</p>
+                </div>
+                <div class="step-card fade-in">
+                    <div class="step-number">3</div>
+                    <h3 class="step-title">Customize Output</h3>
+                    <p class="step-description">Edit display names with color codes, add custom lore, and apply enchantments to your result item.</p>
+                </div>
+                <div class="step-card fade-in">
+                    <div class="step-number">4</div>
+                    <h3 class="step-title">Save & Share</h3>
+                    <p class="step-description">Recipes are automatically saved to the database and persist through server restarts.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="content-section">
+            <h2 class="section-title fade-in"><span>Key Features</span></h2>
+            <div class="features-grid">
+                <div class="feature-card fade-in">
+                    <div class="feature-icon">🎯</div>
+                    <h3 class="feature-title">Up to Nine Ingredients</h3>
+                    <p class="feature-description">Use the full 3x3 crafting grid to create complex recipes with multiple ingredients for maximum creativity.</p>
+                </div>
+                <div class="feature-card fade-in">
+                    <div class="feature-icon">🎨</div>
+                    <h3 class="feature-title">Custom Item Creation</h3>
+                    <p class="feature-description">Design unique items with custom display names, colorful lore text, and powerful enchantments.</p>
+                </div>
+                <div class="feature-card fade-in">
+                    <div class="feature-icon">💾</div>
+                    <h3 class="feature-title">Database Storage</h3>
+                    <p class="feature-description">All recipes are securely saved to a database ensuring they persist through server restarts and updates.</p>
+                </div>
+                <div class="feature-card fade-in">
+                    <div class="feature-icon">🖥️</div>
+                    <h3 class="feature-title">GUI-Based Setup</h3>
+                    <p class="feature-description">Zero configuration required! Everything is managed through intuitive in-game interfaces.</p>
+                </div>
+                <div class="feature-card fade-in">
+                    <div class="feature-icon">🌈</div>
+                    <h3 class="feature-title">Color Code Support</h3>
+                    <p class="feature-description">Add vibrant colors to item names and lore using Minecraft's color code system for visual appeal.</p>
+                </div>
+                <div class="feature-card fade-in">
+                    <div class="feature-icon">⚡</div>
+                    <h3 class="feature-title">Enchantment Integration</h3>
+                    <p class="feature-description">Apply any enchantment to your custom items to create truly unique and powerful crafted items.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="content-section">
+            <div class="info-grid">
+                <div class="info-card fade-in">
+                    <h3 class="info-title">📋 Commands</h3>
+                    <div class="scrollable-commands">
+                        <div class="command-category">
+                            <h4 class="category-title">Main Command</h4>
+                            <ul class="command-list">
+                                <li><span class="command">/crafting</span><span class="command-desc">- Opens the custom crafting GUI interface</span></li>
+                            </ul>
+                        </div>
+                        <div style="margin-top: 30px; padding: 20px; background: rgba(255, 215, 0, 0.1); border: 1px solid rgba(255, 215, 0, 0.3); border-radius: 10px;">
+                            <h4 style="color: var(--accent); margin-bottom: 10px; font-size: 1rem;">✨ Simplicity at its Best</h4>
+                            <p style="color: var(--text-muted); font-size: 0.9rem; line-height: 1.5;">MythicCrafting is designed with simplicity in mind. The single command opens a comprehensive GUI where you can create, edit, and manage all your custom recipes without touching configuration files.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="info-card fade-in">
+                    <h3 class="info-title">🔐 Permissions</h3>
+                    <div class="scrollable-commands">
+                        <ul class="permission-list">
+                            <li><span class="permission">mythiccrafting.use</span><span class="permission-desc">- Allows using the crafting GUI (default: true)</span></li>
+                            <li><span class="permission">mythiccrafting.create</span><span class="permission-desc">- Allows creating new recipes (default: op)</span></li>
+                            <li><span class="permission">mythiccrafting.admin</span><span class="permission-desc">- Allows editing/deleting all recipes and reloading (default: op)</span></li>
+                            <li><span class="permission">mythiccrafting.*</span><span class="permission-desc">- Grants all MythicCrafting permissions</span></li>
+                        </ul>
+                        <div style="margin-top: 30px; padding: 20px; background: rgba(255, 215, 0, 0.1); border: 1px solid rgba(255, 215, 0, 0.3); border-radius: 10px;">
+                            <h4 style="color: var(--accent); margin-bottom: 10px; font-size: 1rem;">🛡️ Permission Structure</h4>
+                            <p style="color: var(--text-muted); font-size: 0.9rem; line-height: 1.5;">The permission system is tiered: all players can use existing recipes, while only operators can create new ones or manage the system by default. Perfect for controlled creative environments.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="stats">
+            <h2 class="section-title fade-in"><span>Plugin Statistics</span></h2>
+            <div class="stats-grid">
+                <div class="stat-item fade-in">
+                    <div class="stat-number">9</div>
+                    <div class="stat-label">Max Ingredients</div>
+                </div>
+                <div class="stat-item fade-in">
+                    <div class="stat-number">1</div>
+                    <div class="stat-label">Command</div>
+                </div>
+                <div class="stat-item fade-in">
+                    <div class="stat-number">0</div>
+                    <div class="stat-label">Config Required</div>
+                </div>
+                <div class="stat-item fade-in">
+                    <div class="stat-number">∞</div>
+                    <div class="stat-label">Recipes Possible</div>
+                </div>
+            </div>
+        </section>
+
+        <footer class="footer">
+            <p class="footer-text">
+                Created by <span class="footer-highlight">Togls Development</span> |
+                For <span class="footer-highlight">Minecraft Servers</span> |
+                MythicCrafting Plugin
+            </p>
+        </footer>
+    </div>
+
+    <script>
+        // Intersection Observer for fade-in animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, observerOptions);
+
+        // Observe all fade-in elements
+        document.querySelectorAll('.fade-in').forEach(el => {
+            observer.observe(el);
+        });
+
+        // Smooth scroll behavior
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Enhanced hover effects for step cards
+        document.querySelectorAll('.step-card').forEach(card => {
+            card.addEventListener('mouseenter', () => {
+                card.style.animation = 'none';
+                card.offsetHeight; // Trigger reflow
+                card.style.animation = 'pulse 0.6s ease-in-out';
+            });
+        });
+
+        // Parallax effect on scroll
+        let ticking = false;
+        function updateParallax() {
+            const scrolled = window.pageYOffset;
+            const parallaxElements = document.querySelectorAll('.bg-orb');
+
+            parallaxElements.forEach((element, index) => {
+                const speed = 0.5 + (index * 0.2);
+                const yPos = -(scrolled * speed);
+                element.style.transform = `translateY(${yPos}px)`;
+            });
+
+            ticking = false;
+        }
+
+        function requestTick() {
+            if (!ticking) {
+                window.requestAnimationFrame(updateParallax);
+                ticking = true;
+            }
+        }
+
+        window.addEventListener('scroll', requestTick);
+
+        // Add pulse animation
+        const style = document.createElement('style');
+        style.textContent = `
+                        @keyframes pulse {
+                            0% { transform: scale(1); }
+                            50% { transform: scale(1.05); }
+                            100% { transform: scale(1); }
+                        }
+                    `;
+        document.head.appendChild(style);
+    </script>
+</body>
+</html>

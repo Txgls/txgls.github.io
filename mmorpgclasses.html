@@ -1,0 +1,992 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MMORPGClasses - Advanced Class System | Togls Development</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #4CAF50;
+            --secondary: #2E7D32;
+            --accent: #66BB6A;
+            --dark: #0a0a0a;
+            --darker: #050505;
+            --light: #ffffff;
+            --text: #e0e0e0;
+            --text-muted: #a0a0a0;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--darker);
+            color: var(--text);
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+
+        .container {
+            min-height: 100vh;
+            position: relative;
+            background: radial-gradient(ellipse at top left, rgba(76, 175, 80, 0.1) 0%, transparent 50%), radial-gradient(ellipse at bottom right, rgba(46, 125, 50, 0.08) 0%, transparent 50%), linear-gradient(180deg, var(--darker) 0%, var(--dark) 100%);
+        }
+
+        .bg-elements {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+            overflow: hidden;
+        }
+
+        .bg-grid {
+            position: absolute;
+            width: 200%;
+            height: 200%;
+            top: -50%;
+            left: -50%;
+            background-image: linear-gradient(rgba(76, 175, 80, 0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(76, 175, 80, 0.03) 1px, transparent 1px);
+            background-size: 100px 100px;
+            animation: gridMove 30s linear infinite;
+        }
+
+        @keyframes gridMove {
+            0% {
+                transform: translate(0, 0);
+            }
+
+            100% {
+                transform: translate(50px, 50px);
+            }
+        }
+
+        .bg-orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(100px);
+            opacity: 0.4;
+            animation: orbitFloat 20s infinite ease-in-out;
+        }
+
+            .bg-orb:nth-child(2) {
+                width: 600px;
+                height: 600px;
+                background: radial-gradient(circle, var(--primary), transparent);
+                top: -20%;
+                right: -10%;
+                animation-duration: 25s;
+            }
+
+            .bg-orb:nth-child(3) {
+                width: 400px;
+                height: 400px;
+                background: radial-gradient(circle, var(--secondary), transparent);
+                bottom: -10%;
+                left: -5%;
+                animation-duration: 30s;
+                animation-delay: -10s;
+            }
+
+        @keyframes orbitFloat {
+            0%, 100% {
+                transform: translate(0, 0) scale(1);
+            }
+
+            33% {
+                transform: translate(30px, -30px) scale(1.1);
+            }
+
+            66% {
+                transform: translate(-20px, 20px) scale(0.95);
+            }
+        }
+
+        .back-button {
+            position: fixed;
+            top: 40px;
+            left: 40px;
+            background: var(--primary);
+            color: white;
+            text-decoration: none;
+            padding: 16px;
+            border-radius: 50%;
+            width: 56px;
+            height: 56px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 10px 30px rgba(76, 175, 80, 0.3);
+            z-index: 1000;
+            font-size: 1.2rem;
+        }
+
+            .back-button:hover {
+                transform: translateY(-5px) scale(1.05);
+                box-shadow: 0 15px 40px rgba(76, 175, 80, 0.4);
+                background: var(--accent);
+            }
+
+        .discord-button {
+            position: fixed;
+            top: 40px;
+            right: 40px;
+            background: #5865F2;
+            color: white;
+            text-decoration: none;
+            padding: 16px;
+            border-radius: 50%;
+            width: 56px;
+            height: 56px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 10px 30px rgba(88, 101, 242, 0.3);
+            z-index: 1000;
+            overflow: hidden;
+        }
+
+            .discord-button::before {
+                content: '';
+                position: absolute;
+                top: 0;
+                left: -100%;
+                width: 100%;
+                height: 100%;
+                background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+                transition: left 0.6s;
+            }
+
+            .discord-button:hover::before {
+                left: 100%;
+            }
+
+            .discord-button:hover {
+                transform: translateY(-5px) scale(1.05);
+                box-shadow: 0 15px 40px rgba(88, 101, 242, 0.4);
+                background: #6874F5;
+            }
+
+        .discord-logo {
+            width: 24px;
+            height: 24px;
+            fill: white;
+        }
+
+        .header {
+            position: relative;
+            text-align: center;
+            padding: 120px 20px 80px;
+            z-index: 2;
+            background: radial-gradient(ellipse at center, rgba(76, 175, 80, 0.1) 0%, transparent 70%);
+        }
+
+            .header::before {
+                content: '';
+                position: absolute;
+                top: 0;
+                left: 0;
+                right: 0;
+                height: 1px;
+                background: linear-gradient(90deg, transparent, var(--primary), transparent);
+                animation: shimmer 3s infinite;
+            }
+
+        @keyframes shimmer {
+            0% {
+                opacity: 0.3;
+            }
+
+            50% {
+                opacity: 0.8;
+            }
+
+            100% {
+                opacity: 0.3;
+            }
+        }
+
+        .plugin-icon {
+            font-size: 6rem;
+            margin-bottom: 20px;
+            filter: drop-shadow(0 10px 30px rgba(0, 0, 0, 0.5));
+            animation: iconFloat 4s ease-in-out infinite;
+        }
+
+        @keyframes iconFloat {
+            0%, 100% {
+                transform: translateY(0) rotate(0deg);
+            }
+
+            50% {
+                transform: translateY(-10px) rotate(5deg);
+            }
+        }
+
+        .plugin-title {
+            font-size: 4rem;
+            font-weight: 900;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 50%, var(--secondary) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 10px;
+            letter-spacing: -2px;
+        }
+
+        .plugin-subtitle {
+            font-size: 1.5rem;
+            color: var(--secondary);
+            font-weight: 600;
+            margin-bottom: 30px;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            opacity: 0.9;
+        }
+
+        .plugin-description {
+            font-size: 1.2rem;
+            color: var(--text);
+            max-width: 800px;
+            margin: 0 auto;
+            line-height: 1.8;
+            opacity: 0.8;
+            font-weight: 300;
+        }
+
+        .content-section {
+            padding: 80px 20px;
+            max-width: 1400px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 2;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 3rem;
+            font-weight: 800;
+            margin-bottom: 60px;
+            position: relative;
+            letter-spacing: -1px;
+        }
+
+            .section-title span {
+                background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
+                background-clip: text;
+            }
+
+            .section-title::after {
+                content: '';
+                position: absolute;
+                bottom: -15px;
+                left: 50%;
+                transform: translateX(-50%);
+                width: 100px;
+                height: 3px;
+                background: linear-gradient(90deg, transparent, var(--primary), var(--accent), transparent);
+                border-radius: 2px;
+            }
+
+        .classes-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-bottom: 80px;
+        }
+
+        .class-card {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.02));
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 30px;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+            overflow: hidden;
+        }
+
+            .class-card::before {
+                content: '';
+                position: absolute;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                background: radial-gradient(circle at 50% 50%, rgba(76, 175, 80, 0.1) 0%, transparent 70%);
+                opacity: 0;
+                transition: opacity 0.3s;
+            }
+
+            .class-card:hover::before {
+                opacity: 1;
+            }
+
+            .class-card:hover {
+                transform: translateY(-10px);
+                border-color: rgba(76, 175, 80, 0.3);
+                box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+            }
+
+        .class-icon {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            text-align: center;
+            filter: drop-shadow(0 5px 15px rgba(0, 0, 0, 0.3));
+        }
+
+        .class-name {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 15px;
+            text-align: center;
+        }
+
+        .class-description {
+            color: var(--text-muted);
+            line-height: 1.6;
+            text-align: center;
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 40px;
+        }
+
+        .info-card {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.03), rgba(255, 255, 255, 0.01));
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 40px;
+            transition: all 0.3s ease;
+        }
+
+            .info-card:hover {
+                border-color: rgba(76, 175, 80, 0.3);
+                box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+            }
+
+        .info-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 25px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .scrollable-commands {
+            max-height: 500px;
+            overflow-y: auto;
+            padding-right: 10px;
+        }
+
+            .scrollable-commands::-webkit-scrollbar {
+                width: 8px;
+            }
+
+            .scrollable-commands::-webkit-scrollbar-track {
+                background: rgba(255, 255, 255, 0.05);
+                border-radius: 10px;
+            }
+
+            .scrollable-commands::-webkit-scrollbar-thumb {
+                background: var(--primary);
+                border-radius: 10px;
+                transition: background 0.3s ease;
+            }
+
+                .scrollable-commands::-webkit-scrollbar-thumb:hover {
+                    background: var(--accent);
+                }
+
+        .command-category {
+            margin-bottom: 30px;
+        }
+
+        .category-title {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--accent);
+            margin-bottom: 15px;
+            padding-bottom: 8px;
+            border-bottom: 2px solid rgba(76, 175, 80, 0.3);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .command-list, .permission-list {
+            list-style: none;
+            padding: 0;
+        }
+
+            .command-list li, .permission-list li {
+                padding: 12px 0;
+                border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+                font-family: 'Courier New', monospace;
+                font-size: 0.9rem;
+            }
+
+                .command-list li:last-child, .permission-list li:last-child {
+                    border-bottom: none;
+                }
+
+        .command {
+            color: var(--accent);
+            font-weight: 600;
+        }
+
+        .command-desc {
+            color: var(--text-muted);
+            margin-left: 10px;
+        }
+
+        .permission {
+            color: var(--primary);
+            font-weight: 600;
+        }
+
+        .permission-desc {
+            color: var(--text-muted);
+            margin-left: 10px;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+        }
+
+        .feature-card {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.02));
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 30px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+            .feature-card:hover {
+                transform: translateY(-5px);
+                border-color: rgba(76, 175, 80, 0.3);
+                box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+            }
+
+        .feature-icon {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            filter: drop-shadow(0 5px 15px rgba(0, 0, 0, 0.3));
+        }
+
+        .feature-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 15px;
+        }
+
+        .feature-description {
+            color: var(--text-muted);
+            line-height: 1.6;
+        }
+
+        .stats {
+            background: linear-gradient(180deg, transparent, rgba(76, 175, 80, 0.05), transparent);
+            padding: 80px 20px;
+            text-align: center;
+            position: relative;
+        }
+
+            .stats::before, .stats::after {
+                content: '';
+                position: absolute;
+                left: 0;
+                right: 0;
+                height: 1px;
+                background: linear-gradient(90deg, transparent, rgba(76, 175, 80, 0.3), transparent);
+            }
+
+            .stats::before {
+                top: 0;
+            }
+
+            .stats::after {
+                bottom: 0;
+            }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 40px;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .stat-item {
+            padding: 40px 20px;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.03), rgba(255, 255, 255, 0.01));
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+        }
+
+            .stat-item:hover {
+                transform: translateY(-5px) scale(1.02);
+                border-color: rgba(76, 175, 80, 0.3);
+                box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+            }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 900;
+            background: linear-gradient(135deg, var(--secondary) 0%, var(--primary) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 10px;
+        }
+
+        .stat-label {
+            color: var(--text);
+            font-size: 1rem;
+            font-weight: 600;
+            opacity: 0.8;
+        }
+
+        .footer {
+            background: linear-gradient(180deg, transparent, var(--darker));
+            padding: 60px 20px 40px;
+            text-align: center;
+            position: relative;
+        }
+
+            .footer::before {
+                content: '';
+                position: absolute;
+                top: 0;
+                left: 0;
+                right: 0;
+                height: 1px;
+                background: linear-gradient(90deg, transparent, rgba(76, 175, 80, 0.2), transparent);
+            }
+
+        .footer-text {
+            color: var(--text-muted);
+            font-size: 1rem;
+            line-height: 2;
+        }
+
+        .footer-highlight {
+            color: var(--primary);
+            font-weight: 700;
+            transition: all 0.3s ease;
+        }
+
+            .footer-highlight:hover {
+                color: var(--accent);
+            }
+
+        @media (max-width: 768px) {
+            .back-button, .discord-button {
+                top: 20px;
+                width: 48px;
+                height: 48px;
+                padding: 12px;
+            }
+
+            .back-button {
+                left: 20px;
+            }
+
+            .discord-button {
+                right: 20px;
+            }
+
+            .plugin-title {
+                font-size: 2.5rem;
+            }
+
+            .section-title {
+                font-size: 2rem;
+            }
+
+            .classes-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .info-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .scrollable-commands {
+                max-height: 400px;
+            }
+        }
+
+        .fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.6s ease;
+        }
+
+            .fade-in.visible {
+                opacity: 1;
+                transform: translateY(0);
+            }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="bg-elements">
+            <div class="bg-grid"></div>
+            <div class="bg-orb"></div>
+            <div class="bg-orb"></div>
+        </div>
+
+        <a href="minecraft.html" class="back-button" title="Back to Minecraft Plugins">←</a>
+
+        <a href="https://discord.gg/4cV7Tu7ESu" target="_blank" class="discord-button" title="Join our Discord">
+            <svg class="discord-logo" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path d="M20.317 4.3698a19.7913 19.7913 0 00-4.8851-1.5152.0741.0741 0 00-.0785.0371c-.211.3753-.4447.8648-.6083 1.2495-1.8447-.2762-3.68-.2762-5.4868 0-.1636-.3933-.4058-.8742-.6177-1.2495a.077.077 0 00-.0785-.037 19.7363 19.7363 0 00-4.8852 1.515.0699.0699 0 00-.0321.0277C.5334 9.0458-.319 13.5799.0992 18.0578a.0824.0824 0 00.0312.0561c2.0528 1.5076 4.0413 2.4228 5.9929 3.0294a.0777.0777 0 00.0842-.0276c.4616-.6304.8731-1.2952 1.226-1.9942a.076.076 0 00-.0416-.1057c-.6528-.2476-1.2743-.5495-1.8722-.8923a.077.077 0 01-.0076-.1277c.1258-.0943.2517-.1923.3718-.2914a.0743.0743 0 01.0776-.0105c3.9278 1.7933 8.18 1.7933 12.0614 0a.0739.0739 0 01.0785.0095c.1202.099.246.1981.3728.2924a.077.077 0 01-.0066.1276 12.2986 12.2986 0 01-1.873.8914.0766.0766 0 00-.0407.1067c.3604.698.7719 1.3628 1.225 1.9932a.076.076 0 00.0842.0286c1.961-.6067 3.9495-1.5219 6.0023-3.0294a.077.077 0 00.0313-.0552c.5004-5.177-.8382-9.6739-3.5485-13.6604a.061.061 0 00-.0312-.0286zM8.02 15.3312c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9555-2.4189 2.157-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.9555 2.4189-2.1569 2.4189zm7.9748 0c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9554-2.4189 2.1569-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.946 2.4189-2.1568 2.4189Z" />
+            </svg>
+        </a>
+
+        <header class="header">
+            <div class="plugin-icon">⚔️</div>
+            <h1 class="plugin-title">MMORPGClasses</h1>
+            <p class="plugin-subtitle">Advanced Class System</p>
+            <p class="plugin-description">
+                Experience immersive MMORPG gameplay with our comprehensive class system. Choose from six unique classes,
+                each with distinctive abilities, master powers, and strategic advantages. Build your character through
+                custom progression systems and dominate the battlefield.
+            </p>
+        </header>
+
+        <section class="content-section">
+            <h2 class="section-title fade-in"><span>Available Classes</span></h2>
+            <div class="classes-grid">
+                <div class="class-card fade-in">
+                    <div class="class-icon">🔥</div>
+                    <h3 class="class-name">Fire Class</h3>
+                    <p class="class-description">Harness the destructive power of flames with scorching abilities and fire-based master powers.</p>
+                </div>
+                <div class="class-card fade-in">
+                    <div class="class-icon">🩸</div>
+                    <h3 class="class-name">Blood Class</h3>
+                    <p class="class-description">Manipulate life force itself with blood magic, healing allies and draining enemies.</p>
+                </div>
+                <div class="class-card fade-in">
+                    <div class="class-icon">💧</div>
+                    <h3 class="class-name">Water Class</h3>
+                    <p class="class-description">Flow like water with fluid combat techniques and aquatic mastery abilities.</p>
+                </div>
+                <div class="class-card fade-in">
+                    <div class="class-icon">👻</div>
+                    <h3 class="class-name">Soul Class</h3>
+                    <p class="class-description">Command spiritual energies to steal souls and crush your enemies' will.</p>
+                </div>
+                <div class="class-card fade-in">
+                    <div class="class-icon">❄️</div>
+                    <h3 class="class-name">Snow Class</h3>
+                    <p class="class-description">Freeze your opponents solid with ice-cold abilities and blizzard powers.</p>
+                </div>
+                <div class="class-card fade-in">
+                    <div class="class-icon">⚡</div>
+                    <h3 class="class-name">Lightning Class</h3>
+                    <p class="class-description">Strike with the speed of lightning and unleash electrical storms upon foes.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="content-section">
+            <h2 class="section-title fade-in"><span>Key Features</span></h2>
+            <div class="features-grid">
+                <div class="feature-card fade-in">
+                    <div class="feature-icon">⭐</div>
+                    <h3 class="feature-title">Master Abilities</h3>
+                    <p class="feature-description">Each class features a unique master ability plus three custom abilities with strengths and weaknesses.</p>
+                </div>
+                <div class="feature-card fade-in">
+                    <div class="feature-icon">💰</div>
+                    <h3 class="feature-title">Custom Economy</h3>
+                    <p class="feature-description">Custom points system with fully customizable store and point multipliers (1-5x) for enhanced rewards.</p>
+                </div>
+                <div class="feature-card fade-in">
+                    <div class="feature-icon">📈</div>
+                    <h3 class="feature-title">Level System</h3>
+                    <p class="feature-description">Fully customizable leveling system with GUI, configurable rewards, and experience requirements.</p>
+                </div>
+                <div class="feature-card fade-in">
+                    <div class="feature-icon">👥</div>
+                    <h3 class="feature-title">Party System</h3>
+                    <p class="feature-description">Custom parties (clans) with comprehensive features including warps, homes, and party chat.</p>
+                </div>
+                <div class="feature-card fade-in">
+                    <div class="feature-icon">📦</div>
+                    <h3 class="feature-title">Loot Chests</h3>
+                    <p class="feature-description">Fully functional loot chest system with up to five customizable tiers for varied rewards.</p>
+                </div>
+                <div class="feature-card fade-in">
+                    <div class="feature-icon">🎮</div>
+                    <h3 class="feature-title">Custom GUIs</h3>
+                    <p class="feature-description">Intuitive graphical interfaces for class selection, points shop, and level management.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="content-section">
+            <div class="info-grid">
+                <div class="info-card fade-in">
+                    <h3 class="info-title">📋 Commands</h3>
+                    <div class="scrollable-commands">
+                        <div class="command-category">
+                            <h4 class="category-title">Base Commands</h4>
+                            <ul class="command-list">
+                                <li><span class="command">/classes</span><span class="command-desc">- opens up the class choosing GUI</span></li>
+                                <li><span class="command">/pointsshop</span><span class="command-desc">- opens up the points shop GUI</span></li>
+                                <li><span class="command">/levels</span><span class="command-desc">- opens up the levels GUI</span></li>
+                            </ul>
+                        </div>
+
+                        <div class="command-category">
+                            <h4 class="category-title">Admin Commands</h4>
+                            <ul class="command-list">
+                                <li><span class="command">/classremove (player)</span><span class="command-desc">- removes the players class</span></li>
+                                <li><span class="command">/class-set (player) (class)</span><span class="command-desc">- sets a player to the specific class</span></li>
+                                <li><span class="command">/classreload</span><span class="command-desc">- reloads the editable yaml files for the plugin</span></li>
+                                <li><span class="command">/class (player)</span><span class="command-desc">- allows you to see what class a player is in</span></li>
+                                <li><span class="command">/points add/remove (player) (class) (amount)</span><span class="command-desc">- allows you to add or remove points to/from a player</span></li>
+                                <li><span class="command">/pointsview (player) (class)</span><span class="command-desc">- allows you to view how many points a player has in that class</span></li>
+                                <li><span class="command">/pointsmultiplier add (player) (class) (amount) (duration)</span><span class="command-desc">- adds a multiplier to a player (1-5x, duration in seconds)</span></li>
+                                <li><span class="command">/pointsmultiplier view (player) (class)</span><span class="command-desc">- views current player multipliers</span></li>
+                                <li><span class="command">/pointsmultiplier remove (player) (class)</span><span class="command-desc">- removes multipliers from players</span></li>
+                                <li><span class="command">/party chatadmin</span><span class="command-desc">- enables the reviewal of party chats</span></li>
+                            </ul>
+                        </div>
+
+                        <div class="command-category">
+                            <h4 class="category-title">Party Commands</h4>
+                            <ul class="command-list">
+                                <li><span class="command">/party create (name)</span><span class="command-desc">- creates a party</span></li>
+                                <li><span class="command">/party leave</span><span class="command-desc">- leaves a party</span></li>
+                                <li><span class="command">/party view (player)</span><span class="command-desc">- views a players party</span></li>
+                                <li><span class="command">/party members (name)</span><span class="command-desc">- view the members of a party</span></li>
+                                <li><span class="command">/party kick (player)</span><span class="command-desc">- can only be used by the leader. Kicks a player</span></li>
+                                <li><span class="command">/party invite/accept/decline</span><span class="command-desc">- Invites, accepts or declines invitations</span></li>
+                                <li><span class="command">/party chat (message)</span><span class="command-desc">- sends a message in party chat</span></li>
+                                <li><span class="command">/party warp</span><span class="command-desc">- teleports to a party warp</span></li>
+                                <li><span class="command">/party setwarp</span><span class="command-desc">- creates party warps</span></li>
+                                <li><span class="command">/party delwarp</span><span class="command-desc">- deletes party warps</span></li>
+                                <li><span class="command">/party home</span><span class="command-desc">- teleports to the party home</span></li>
+                                <li><span class="command">/party sethome</span><span class="command-desc">- creates the party home</span></li>
+                                <li><span class="command">/party delhome</span><span class="command-desc">- deletes the party home</span></li>
+                                <li><span class="command">/party list</span><span class="command-desc">- lists all active parties on the server</span></li>
+                                <li><span class="command">/party leader</span><span class="command-desc">- appoints a new leader for the party</span></li>
+                            </ul>
+                        </div>
+
+                        <div class="command-category">
+                            <h4 class="category-title">Blood Class Commands</h4>
+                            <ul class="command-list">
+                                <li><span class="command">/bloodlift</span><span class="command-desc">- enables/disables the blood lift ability</span></li>
+                                <li><span class="command">/bloodshield</span><span class="command-desc">- activates the blood shield ability</span></li>
+                                <li><span class="command">/bloodfrenzy</span><span class="command-desc">- enables the blood frenzy ability</span></li>
+                            </ul>
+                        </div>
+
+                        <div class="command-category">
+                            <h4 class="category-title">Water Class Commands</h4>
+                            <ul class="command-list">
+                                <li><span class="command">/watershield</span><span class="command-desc">- activates the water shield ability</span></li>
+                                <li><span class="command">/hydrodash</span><span class="command-desc">- enables/disables the hydro dash ability</span></li>
+                                <li><span class="command">/aquasurge</span><span class="command-desc">- enables the aqua surge master ability</span></li>
+                            </ul>
+                        </div>
+
+                        <div class="command-category">
+                            <h4 class="category-title">Fire Class Commands</h4>
+                            <ul class="command-list">
+                                <li><span class="command">/fireshield</span><span class="command-desc">- activates the fire shield ability</span></li>
+                                <li><span class="command">/scorchedearth</span><span class="command-desc">- enables/disables the scorched earth ability</span></li>
+                                <li><span class="command">/firerage</span><span class="command-desc">- enables the fire rage master ability</span></li>
+                            </ul>
+                        </div>
+
+                        <div class="command-category">
+                            <h4 class="category-title">Soul Class Commands</h4>
+                            <ul class="command-list">
+                                <li><span class="command">/soulshield</span><span class="command-desc">- activates the soul shield ability</span></li>
+                                <li><span class="command">/soulsteal</span><span class="command-desc">- enables/disables the soul steal ability</span></li>
+                                <li><span class="command">/soulcrush</span><span class="command-desc">- activates the soul crush master ability</span></li>
+                            </ul>
+                        </div>
+
+                        <div class="command-category">
+                            <h4 class="category-title">Snow Class Commands</h4>
+                            <ul class="command-list">
+                                <li><span class="command">/snowshield</span><span class="command-desc">- activates the snow shield ability</span></li>
+                                <li><span class="command">/proximityfreeze</span><span class="command-desc">- enables/disables the proximity freeze ability</span></li>
+                                <li><span class="command">/blizzard</span><span class="command-desc">- activates the blizzard ability</span></li>
+                            </ul>
+                        </div>
+
+                        <div class="command-category">
+                            <h4 class="category-title">Lightning Class Commands</h4>
+                            <ul class="command-list">
+                                <li><span class="command">/electricstorm</span><span class="command-desc">- activates the electric storm ability</span></li>
+                                <li><span class="command">/electricshield</span><span class="command-desc">- activates the electric shield</span></li>
+                                <li><span class="command">/lightningdash</span><span class="command-desc">- activates the lightning dash ability</span></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="info-card fade-in">
+                    <h3 class="info-title">🔐 Permissions</h3>
+                    <div class="scrollable-commands">
+                        <ul class="permission-list">
+                            <li><span class="permission">classes.base</span><span class="permission-desc">- base command to use /classes</span></li>
+                            <li><span class="permission">classes.admin</span><span class="permission-desc">- access to administrator commands (op: default)</span></li>
+                            <li><span class="permission">classes.pointsshop.use</span><span class="permission-desc">- access to the points shop</span></li>
+                            <li><span class="permission">classes.levels</span><span class="permission-desc">- access to the levels gui</span></li>
+                            <li><span class="permission">classes.party</span><span class="permission-desc">- access to party commands</span></li>
+                            <li><span class="permission">classes.class.blood</span><span class="permission-desc">- access to the blood class commands</span></li>
+                            <li><span class="permission">classes.class.water</span><span class="permission-desc">- access to the water class commands</span></li>
+                            <li><span class="permission">classes.class.fire.shield</span><span class="permission-desc">- access to the fire class commands</span></li>
+                            <li><span class="permission">classes.class.soul</span><span class="permission-desc">- access to the soul class commands</span></li>
+                            <li><span class="permission">classes.class.snow</span><span class="permission-desc">- access to the snow class commands</span></li>
+                            <li><span class="permission">classes.class.lightning</span><span class="permission-desc">- access to the lightning class commands</span></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="stats">
+            <h2 class="section-title fade-in"><span>Plugin Statistics</span></h2>
+            <div class="stats-grid">
+                <div class="stat-item fade-in">
+                    <div class="stat-number">6</div>
+                    <div class="stat-label">Unique Classes</div>
+                </div>
+                <div class="stat-item fade-in">
+                    <div class="stat-number">40+</div>
+                    <div class="stat-label">Commands</div>
+                </div>
+                <div class="stat-item fade-in">
+                    <div class="stat-number">5</div>
+                    <div class="stat-label">Loot Tiers</div>
+                </div>
+                <div class="stat-item fade-in">
+                    <div class="stat-number">∞</div>
+                    <div class="stat-label">Customization</div>
+                </div>
+            </div>
+        </section>
+
+        <footer class="footer">
+            <p class="footer-text">
+                Created by <span class="footer-highlight">Togls Development</span> |
+                For <span class="footer-highlight">Minecraft Servers</span> |
+                MMORPGClasses Plugin
+            </p>
+        </footer>
+    </div>
+
+    <script>
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.fade-in').forEach(el => {
+            observer.observe(el);
+        });
+
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        document.querySelectorAll('.class-card').forEach(card => {
+            card.addEventListener('mouseenter', () => {
+                card.style.animation = 'none';
+                card.offsetHeight;
+                card.style.animation = 'pulse 0.6s ease-in-out';
+            });
+        });
+
+        let ticking = false;
+        function updateParallax() {
+            const scrolled = window.pageYOffset;
+            const parallaxElements = document.querySelectorAll('.bg-orb');
+
+            parallaxElements.forEach((element, index) => {
+                const speed = 0.5 + (index * 0.2);
+                const yPos = -(scrolled * speed);
+                element.style.transform = `translateY(${yPos}px)`;
+            });
+
+            ticking = false;
+        }
+
+        function requestTick() {
+            if (!ticking) {
+                window.requestAnimationFrame(updateParallax);
+                ticking = true;
+            }
+        }
+
+        window.addEventListener('scroll', requestTick);
+
+        const style = document.createElement('style');
+        style.textContent = `
+                @keyframes pulse {
+                    0% { transform: scale(1); }
+                    50% { transform: scale(1.05); }
+                    100% { transform: scale(1); }
+                }
+            `;
+        document.head.appendChild(style);
+    </script>
+</body>
+</html>

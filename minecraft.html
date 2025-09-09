@@ -251,7 +251,7 @@
 
         .plugins {
             padding: 120px 20px;
-            max-width: 1400px;
+            max-width: 1600px;
             margin: 0 auto;
             position: relative;
             z-index: 2;
@@ -287,8 +287,8 @@
 
         .plugins-grid {
             display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 40px;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 30px;
             margin-bottom: 100px;
         }
 
@@ -297,7 +297,7 @@
             backdrop-filter: blur(10px);
             border: 1px solid rgba(255, 255, 255, 0.1);
             border-radius: 20px;
-            padding: 40px 30px;
+            padding: 35px 25px;
             transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             position: relative;
             overflow: hidden;
@@ -331,8 +331,8 @@
             }
 
         .plugin-icon {
-            font-size: 3.5rem;
-            margin-bottom: 25px;
+            font-size: 3rem;
+            margin-bottom: 20px;
             display: block;
             text-align: center;
             filter: drop-shadow(0 10px 20px rgba(0, 0, 0, 0.3));
@@ -350,9 +350,9 @@
         }
 
         .plugin-title {
-            font-size: 1.8rem;
+            font-size: 1.6rem;
             font-weight: 800;
-            margin-bottom: 10px;
+            margin-bottom: 8px;
             text-align: center;
             background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
             -webkit-background-clip: text;
@@ -361,9 +361,9 @@
         }
 
         .plugin-subtitle {
-            font-size: 1.1rem;
+            font-size: 1rem;
             color: var(--secondary);
-            margin-bottom: 20px;
+            margin-bottom: 15px;
             text-align: center;
             font-weight: 500;
             opacity: 0.9;
@@ -371,27 +371,27 @@
 
         .plugin-desc {
             color: var(--text);
-            line-height: 1.6;
-            font-size: 1rem;
+            line-height: 1.5;
+            font-size: 0.9rem;
             text-align: center;
-            margin-bottom: 30px;
+            margin-bottom: 25px;
             opacity: 0.8;
         }
 
         .features-list {
             list-style: none;
             padding: 0;
-            margin-bottom: 30px;
+            margin-bottom: 25px;
         }
 
             .features-list li {
                 color: var(--text-muted);
-                padding: 10px 0;
+                padding: 8px 0;
                 border-bottom: 1px solid rgba(255, 255, 255, 0.05);
                 display: flex;
                 align-items: center;
                 transition: all 0.3s ease;
-                font-size: 0.95rem;
+                font-size: 0.85rem;
             }
 
                 .features-list li:last-child {
@@ -400,39 +400,40 @@
 
                 .features-list li::before {
                     content: '';
-                    width: 18px;
-                    height: 18px;
-                    margin-right: 15px;
+                    width: 16px;
+                    height: 16px;
+                    margin-right: 12px;
                     background: linear-gradient(135deg, var(--primary), var(--accent));
                     border-radius: 50%;
                     display: flex;
                     align-items: center;
                     justify-content: center;
                     position: relative;
+                    flex-shrink: 0;
                 }
 
                 .features-list li::after {
                     content: '✓';
                     position: absolute;
-                    left: 5px;
+                    left: 4px;
                     color: white;
                     font-weight: bold;
-                    font-size: 12px;
+                    font-size: 10px;
                 }
 
         .plugin-card:hover .features-list li {
             color: var(--text);
-            transform: translateX(10px);
+            transform: translateX(5px);
         }
 
         .cta-button {
             background: linear-gradient(135deg, var(--primary), var(--accent));
             border: none;
-            padding: 15px 30px;
+            padding: 12px 25px;
             border-radius: 100px;
             color: white;
             font-weight: 700;
-            font-size: 1rem;
+            font-size: 0.9rem;
             width: 100%;
             transition: all 0.3s ease;
             text-transform: uppercase;
@@ -589,6 +590,13 @@
                 transform: translateY(-2px);
             }
 
+        @media (max-width: 1200px) {
+            .plugins-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 30px;
+            }
+        }
+
         @media (max-width: 768px) {
             .discord-button {
                 top: 20px;
@@ -626,12 +634,9 @@
             .header {
                 padding: 80px 20px 60px;
             }
-        }
 
-        @media (max-width: 1024px) {
-            .plugins-grid {
-                grid-template-columns: 1fr;
-                gap: 35px;
+            .plugins {
+                max-width: 800px;
             }
         }
 
@@ -736,6 +741,23 @@
                         <li>Bloodline Systems</li>
                         <li>Day/Night Mechanics</li>
                         <li>Blood & Feeding System</li>
+                    </ul>
+                    <button class="cta-button">View Details</button>
+                </a>
+
+                <a href="mythiccrafting.html" class="plugin-card fade-in">
+                    <span class="plugin-icon">🔨</span>
+                    <h3 class="plugin-title">MythicCrafting</h3>
+                    <p class="plugin-subtitle">Custom Crafting System</p>
+                    <p class="plugin-desc">
+                        Advanced crafting system with custom GUI, up to 9 ingredients per recipe, and complete item customization including lore and enchantments.
+                    </p>
+                    <ul class="features-list">
+                        <li>Custom Crafting GUI</li>
+                        <li>Up to 9 Ingredients Support</li>
+                        <li>Database Recipe Storage</li>
+                        <li>GUI-Based Configuration</li>
+                        <li>Item Name, Lore & Enchants</li>
                     </ul>
                     <button class="cta-button">View Details</button>
                 </a>

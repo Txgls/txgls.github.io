@@ -287,7 +287,7 @@
 
         .plugins-grid {
             display: grid;
-            grid-template-columns: repeat(4, 1fr);
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
             gap: 30px;
             margin-bottom: 100px;
         }
@@ -666,6 +666,10 @@
             .fade-in:nth-child(4) {
                 transition-delay: 0.4s;
             }
+
+            .fade-in:nth-child(5) {
+                transition-delay: 0.5s;
+            }
     </style>
 </head>
 <body>
@@ -694,6 +698,23 @@
         <section class="plugins">
             <h2 class="section-title fade-in"><span>Available Plugins</span></h2>
             <div class="plugins-grid">
+                <a href="mythiclifesteal.html" class="plugin-card fade-in">
+                    <span class="plugin-icon">💖</span>
+                    <h3 class="plugin-title">MythicLifesteal</h3>
+                    <p class="plugin-subtitle">Heart-Based Survival System</p>
+                    <p class="plugin-desc">
+                        Very configurable lifesteal plugin where players lose hearts on death and gain them by killing others. Work smarter, not harder - take a break, you deserve it.
+                    </p>
+                    <ul class="features-list">
+                        <li>Fully Configurable Heart System</li>
+                        <li>Heart Loss on Death</li>
+                        <li>PvP Heart Stealing</li>
+                        <li>Withdrawable Heart Items</li>
+                        <li>Admin Management Commands</li>
+                    </ul>
+                    <button class="cta-button">View Details</button>
+                </a>
+
                 <a href="mmorpgclasses.html" class="plugin-card fade-in">
                     <span class="plugin-icon">⚔️</span>
                     <h3 class="plugin-title">MMORPGClasses</h3>
@@ -905,6 +926,7 @@
             scrollTimeout = window.requestAnimationFrame(() => {
                 requestTick();
             });
-        });</script>
+        });
+    </script>
 </body>
 </html>

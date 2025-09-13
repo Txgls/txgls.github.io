@@ -14,9 +14,9 @@
         }
 
         :root {
-            --primary: #4CAF50;
-            --secondary: #2E7D32;
-            --accent: #66BB6A;
+            --primary: #1976D2;
+            --secondary: #1565C0;
+            --accent: #42A5F5;
             --dark: #0a0a0a;
             --darker: #050505;
             --light: #ffffff;
@@ -35,7 +35,7 @@
         .container {
             min-height: 100vh;
             position: relative;
-            background: radial-gradient(ellipse at top left, rgba(76, 175, 80, 0.1) 0%, transparent 50%), radial-gradient(ellipse at bottom right, rgba(46, 125, 50, 0.08) 0%, transparent 50%), linear-gradient(180deg, var(--darker) 0%, var(--dark) 100%);
+            background: radial-gradient(ellipse at top left, rgba(25, 118, 210, 0.1) 0%, transparent 50%), radial-gradient(ellipse at bottom right, rgba(21, 101, 192, 0.08) 0%, transparent 50%), linear-gradient(180deg, var(--darker) 0%, var(--dark) 100%);
         }
 
         /* Animated background */
@@ -56,7 +56,7 @@
             height: 200%;
             top: -50%;
             left: -50%;
-            background-image: linear-gradient(rgba(76, 175, 80, 0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(76, 175, 80, 0.03) 1px, transparent 1px);
+            background-image: linear-gradient(rgba(25, 118, 210, 0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(25, 118, 210, 0.03) 1px, transparent 1px);
             background-size: 100px 100px;
             animation: gridMove 30s linear infinite;
         }
@@ -128,14 +128,14 @@
             align-items: center;
             justify-content: center;
             transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            box-shadow: 0 10px 30px rgba(76, 175, 80, 0.3);
+            box-shadow: 0 10px 30px rgba(25, 118, 210, 0.3);
             z-index: 1000;
             font-size: 1.2rem;
         }
 
             .back-button:hover {
                 transform: translateY(-5px) scale(1.05);
-                box-shadow: 0 15px 40px rgba(76, 175, 80, 0.4);
+                box-shadow: 0 15px 40px rgba(25, 118, 210, 0.4);
                 background: var(--accent);
             }
 
@@ -193,7 +193,7 @@
             text-align: center;
             padding: 120px 20px 80px;
             z-index: 2;
-            background: radial-gradient(ellipse at center, rgba(76, 175, 80, 0.1) 0%, transparent 70%);
+            background: radial-gradient(ellipse at center, rgba(25, 118, 210, 0.1) 0%, transparent 70%);
         }
 
             .header::before {
@@ -333,7 +333,7 @@
                 left: 0;
                 right: 0;
                 bottom: 0;
-                background: radial-gradient(circle at 50% 50%, rgba(76, 175, 80, 0.1) 0%, transparent 70%);
+                background: radial-gradient(circle at 50% 50%, rgba(25, 118, 210, 0.1) 0%, transparent 70%);
                 opacity: 0;
                 transition: opacity 0.3s;
             }
@@ -344,7 +344,7 @@
 
             .rank-card:hover {
                 transform: translateY(-10px);
-                border-color: rgba(76, 175, 80, 0.3);
+                border-color: rgba(25, 118, 210, 0.3);
                 box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
             }
 
@@ -384,7 +384,7 @@
         }
 
             .info-card:hover {
-                border-color: rgba(76, 175, 80, 0.3);
+                border-color: rgba(25, 118, 210, 0.3);
                 box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
             }
 
@@ -435,24 +435,24 @@
             color: var(--accent);
             margin-bottom: 15px;
             padding-bottom: 8px;
-            border-bottom: 2px solid rgba(76, 175, 80, 0.3);
+            border-bottom: 2px solid rgba(25, 118, 210, 0.3);
             text-transform: uppercase;
             letter-spacing: 1px;
         }
 
-        .command-list, .permission-list {
+        .command-list, .permission-list, .placeholder-list {
             list-style: none;
             padding: 0;
         }
 
-            .command-list li, .permission-list li {
+            .command-list li, .permission-list li, .placeholder-list li {
                 padding: 12px 0;
                 border-bottom: 1px solid rgba(255, 255, 255, 0.05);
                 font-family: 'Courier New', monospace;
                 font-size: 0.9rem;
             }
 
-                .command-list li:last-child, .permission-list li:last-child {
+                .command-list li:last-child, .permission-list li:last-child, .placeholder-list li:last-child {
                     border-bottom: none;
                 }
 
@@ -476,6 +476,16 @@
             margin-left: 10px;
         }
 
+        .placeholder {
+            color: var(--accent);
+            font-weight: 600;
+        }
+
+        .placeholder-desc {
+            color: var(--text-muted);
+            margin-left: 10px;
+        }
+
         /* Features Section */
         .features-grid {
             display: grid;
@@ -495,7 +505,7 @@
 
             .feature-card:hover {
                 transform: translateY(-5px);
-                border-color: rgba(76, 175, 80, 0.3);
+                border-color: rgba(25, 118, 210, 0.3);
                 box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
             }
 
@@ -519,7 +529,7 @@
 
         /* Stats Section */
         .stats {
-            background: linear-gradient(180deg, transparent, rgba(76, 175, 80, 0.05), transparent);
+            background: linear-gradient(180deg, transparent, rgba(25, 118, 210, 0.05), transparent);
             padding: 80px 20px;
             text-align: center;
             position: relative;
@@ -531,7 +541,7 @@
                 left: 0;
                 right: 0;
                 height: 1px;
-                background: linear-gradient(90deg, transparent, rgba(76, 175, 80, 0.3), transparent);
+                background: linear-gradient(90deg, transparent, rgba(25, 118, 210, 0.3), transparent);
             }
 
             .stats::before {
@@ -561,7 +571,7 @@
 
             .stat-item:hover {
                 transform: translateY(-5px) scale(1.02);
-                border-color: rgba(76, 175, 80, 0.3);
+                border-color: rgba(25, 118, 210, 0.3);
                 box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
             }
 
@@ -597,7 +607,7 @@
                 left: 0;
                 right: 0;
                 height: 1px;
-                background: linear-gradient(90deg, transparent, rgba(76, 175, 80, 0.2), transparent);
+                background: linear-gradient(90deg, transparent, rgba(25, 118, 210, 0.2), transparent);
             }
 
         .footer-text {
@@ -837,9 +847,121 @@
                             <li><span class="permission">clans.base</span><span class="permission-desc">- base command to use the clans commands (default: true)</span></li>
                             <li><span class="permission">clans.admin</span><span class="permission-desc">- access to administrator commands (op: default)</span></li>
                         </ul>
-                        <div style="margin-top: 30px; padding: 20px; background: rgba(76, 175, 80, 0.1); border: 1px solid rgba(76, 175, 80, 0.3); border-radius: 10px;">
+                        <div style="margin-top: 30px; padding: 20px; background: rgba(25, 118, 210, 0.1); border: 1px solid rgba(25, 118, 210, 0.3); border-radius: 10px;">
                             <h4 style="color: var(--accent); margin-bottom: 10px; font-size: 1rem;">📢 Notice</h4>
                             <p style="color: var(--text-muted); font-size: 0.9rem; line-height: 1.5;">All permissions are defaulted except for <span style="color: var(--primary); font-weight: 600;">clans.admin</span>. This means most features are accessible to all players by default, with only administrative functions requiring special permissions.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="info-card fade-in">
+                    <h3 class="info-title">📊 PlaceholderAPI</h3>
+                    <div class="scrollable-commands">
+                        <div class="command-category">
+                            <h4 class="category-title">Basic Player & Clan Info</h4>
+                            <ul class="placeholder-list">
+                                <li><span class="placeholder">%mythicclans_player%</span><span class="placeholder-desc">- Player name</span></li>
+                                <li><span class="placeholder">%mythicclans_clan%</span><span class="placeholder-desc">- Clan name</span></li>
+                                <li><span class="placeholder">%mythicclans_clan_name%</span><span class="placeholder-desc">- Clan name (alternative)</span></li>
+                                <li><span class="placeholder">%mythicclans_has_clan%</span><span class="placeholder-desc">- true/false if player has clan</span></li>
+                                <li><span class="placeholder">%mythicclans_is_in_clan%</span><span class="placeholder-desc">- Yes/No if player has clan</span></li>
+                            </ul>
+                        </div>
+                        <div class="command-category">
+                            <h4 class="category-title">Leadership & Rank Info</h4>
+                            <ul class="placeholder-list">
+                                <li><span class="placeholder">%mythicclans_clan_leader%</span><span class="placeholder-desc">- Clan leader name</span></li>
+                                <li><span class="placeholder">%mythicclans_is_clan_leader%</span><span class="placeholder-desc">- true/false if player is leader</span></li>
+                                <li><span class="placeholder">%mythicclans_clan_leader_online%</span><span class="placeholder-desc">- true/false if leader is online</span></li>
+                                <li><span class="placeholder">%mythicclans_clan_rank%</span><span class="placeholder-desc">- Player's rank</span></li>
+                                <li><span class="placeholder">%mythicclans_clan_rank_formatted%</span><span class="placeholder-desc">- Formatted rank name</span></li>
+                                <li><span class="placeholder">%mythicclans_clan_rank_color%</span><span class="placeholder-desc">- Color code for rank</span></li>
+                            </ul>
+                        </div>
+                        <div class="command-category">
+                            <h4 class="category-title">Member Statistics</h4>
+                            <ul class="placeholder-list">
+                                <li><span class="placeholder">%mythicclans_clan_member_count%</span><span class="placeholder-desc">- Total clan members</span></li>
+                                <li><span class="placeholder">%mythicclans_clan_members_online%</span><span class="placeholder-desc">- Online member count</span></li>
+                                <li><span class="placeholder">%mythicclans_clan_members_offline%</span><span class="placeholder-desc">- Offline member count</span></li>
+                                <li><span class="placeholder">%mythicclans_clan_max_members%</span><span class="placeholder-desc">- Max allowed members</span></li>
+                                <li><span class="placeholder">%mythicclans_clan_online_members_list%</span><span class="placeholder-desc">- List of online members</span></li>
+                                <li><span class="placeholder">%mythicclans_clan_offline_members_list%</span><span class="placeholder-desc">- List of offline members</span></li>
+                            </ul>
+                        </div>
+                        <div class="command-category">
+                            <h4 class="category-title">Financial Info</h4>
+                            <ul class="placeholder-list">
+                                <li><span class="placeholder">%mythicclans_clan_bank_balance%</span><span class="placeholder-desc">- Raw balance amount</span></li>
+                                <li><span class="placeholder">%mythicclans_clan_bank_balance_formatted%</span><span class="placeholder-desc">- Formatted with $ symbol</span></li>
+                            </ul>
+                        </div>
+                        <div class="command-category">
+                            <h4 class="category-title">Clan History</h4>
+                            <ul class="placeholder-list">
+                                <li><span class="placeholder">%mythicclans_clan_created_date%</span><span class="placeholder-desc">- When clan was created</span></li>
+                                <li><span class="placeholder">%mythicclans_clan_age_days%</span><span class="placeholder-desc">- Clan age in days</span></li>
+                            </ul>
+                        </div>
+                        <div class="command-category">
+                            <h4 class="category-title">Alliance System</h4>
+                            <ul class="placeholder-list">
+                                <li><span class="placeholder">%mythicclans_clan_allies_count%</span><span class="placeholder-desc">- Number of allies</span></li>
+                                <li><span class="placeholder">%mythicclans_clan_allies_list%</span><span class="placeholder-desc">- List of allied clans</span></li>
+                                <li><span class="placeholder">%mythicclans_clan_has_allies%</span><span class="placeholder-desc">- true/false if clan has allies</span></li>
+                            </ul>
+                        </div>
+                        <div class="command-category">
+                            <h4 class="category-title">Home & Warp System</h4>
+                            <ul class="placeholder-list">
+                                <li><span class="placeholder">%mythicclans_clan_has_home%</span><span class="placeholder-desc">- true/false if home is set</span></li>
+                                <li><span class="placeholder">%mythicclans_clan_home_world%</span><span class="placeholder-desc">- Home world name</span></li>
+                                <li><span class="placeholder">%mythicclans_clan_home_x%</span><span class="placeholder-desc">- Home X coordinate</span></li>
+                                <li><span class="placeholder">%mythicclans_clan_home_y%</span><span class="placeholder-desc">- Home Y coordinate</span></li>
+                                <li><span class="placeholder">%mythicclans_clan_home_z%</span><span class="placeholder-desc">- Home Z coordinate</span></li>
+                                <li><span class="placeholder">%mythicclans_clan_warps_count%</span><span class="placeholder-desc">- Number of warps</span></li>
+                                <li><span class="placeholder">%mythicclans_clan_warps_max%</span><span class="placeholder-desc">- Max allowed warps</span></li>
+                                <li><span class="placeholder">%mythicclans_clan_warps_list%</span><span class="placeholder-desc">- List of warp names</span></li>
+                            </ul>
+                        </div>
+                        <div class="command-category">
+                            <h4 class="category-title">Settings & Configuration</h4>
+                            <ul class="placeholder-list">
+                                <li><span class="placeholder">%mythicclans_clan_friendly_fire%</span><span class="placeholder-desc">- true/false</span></li>
+                                <li><span class="placeholder">%mythicclans_clan_friendly_fire_status%</span><span class="placeholder-desc">- Enabled/Disabled</span></li>
+                            </ul>
+                        </div>
+                        <div class="command-category">
+                            <h4 class="category-title">Permission System</h4>
+                            <ul class="placeholder-list">
+                                <li><span class="placeholder">%mythicclans_can_promote%</span><span class="placeholder-desc">- true/false</span></li>
+                                <li><span class="placeholder">%mythicclans_can_demote%</span><span class="placeholder-desc">- true/false</span></li>
+                                <li><span class="placeholder">%mythicclans_can_invite%</span><span class="placeholder-desc">- true/false</span></li>
+                                <li><span class="placeholder">%mythicclans_can_kick%</span><span class="placeholder-desc">- true/false</span></li>
+                                <li><span class="placeholder">%mythicclans_can_rename%</span><span class="placeholder-desc">- true/false</span></li>
+                                <li><span class="placeholder">%mythicclans_can_create_warps%</span><span class="placeholder-desc">- true/false</span></li>
+                                <li><span class="placeholder">%mythicclans_can_delete_warps%</span><span class="placeholder-desc">- true/false</span></li>
+                                <li><span class="placeholder">%mythicclans_can_teleport_warps%</span><span class="placeholder-desc">- true/false</span></li>
+                                <li><span class="placeholder">%mythicclans_can_view_vault%</span><span class="placeholder-desc">- true/false</span></li>
+                            </ul>
+                        </div>
+                        <div class="command-category">
+                            <h4 class="category-title">Invite System</h4>
+                            <ul class="placeholder-list">
+                                <li><span class="placeholder">%mythicclans_has_clan_invite%</span><span class="placeholder-desc">- true/false</span></li>
+                                <li><span class="placeholder">%mythicclans_clan_invite_from%</span><span class="placeholder-desc">- Clan that invited player</span></li>
+                            </ul>
+                        </div>
+                        <div class="command-category">
+                            <h4 class="category-title">Plugin Info</h4>
+                            <ul class="placeholder-list">
+                                <li><span class="placeholder">%mythicclans_plugin_version%</span><span class="placeholder-desc">- Plugin version</span></li>
+                                <li><span class="placeholder">%mythicclans_total_clans%</span><span class="placeholder-desc">- Total number of clans on server</span></li>
+                            </ul>
+                        </div>
+                        <div style="margin-top: 30px; padding: 20px; background: rgba(25, 118, 210, 0.1); border: 1px solid rgba(25, 118, 210, 0.3); border-radius: 10px;">
+                            <h4 style="color: var(--accent); margin-bottom: 10px; font-size: 1rem;">🎨 PlaceholderAPI Integration</h4>
+                            <p style="color: var(--text-muted); font-size: 0.9rem; line-height: 1.5;">48+ placeholders for complete integration with scoreboards, chat, GUIs, and more. Perfect for clan displays and server management systems!</p>
                         </div>
                     </div>
                 </div>
@@ -854,12 +976,12 @@
                     <div class="stat-label">Rank Tiers</div>
                 </div>
                 <div class="stat-item fade-in">
-                    <div class="stat-number">17</div>
-                    <div class="stat-label">Commands</div>
+                    <div class="stat-number">48+</div>
+                    <div class="stat-label">PlaceholderAPI Placeholders</div>
                 </div>
                 <div class="stat-item fade-in">
-                    <div class="stat-number">5</div>
-                    <div class="stat-label">Core Features</div>
+                    <div class="stat-number">17</div>
+                    <div class="stat-label">Commands</div>
                 </div>
                 <div class="stat-item fade-in">
                     <div class="stat-number">∞</div>
@@ -947,12 +1069,12 @@
         // Add pulse animation
         const style = document.createElement('style');
         style.textContent = `
-                @keyframes pulse {
-                    0% { transform: scale(1); }
-                    50% { transform: scale(1.05); }
-                    100% { transform: scale(1); }
-                }
-            `;
+                    @keyframes pulse {
+                        0% { transform: scale(1); }
+                        50% { transform: scale(1.05); }
+                        100% { transform: scale(1); }
+                    }
+                `;
         document.head.appendChild(style);
     </script>
 </body>

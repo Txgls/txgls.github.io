@@ -809,6 +809,8 @@
                                 <li><span class="command">/clans demote</span><span class="command-desc">- demotes another player</span></li>
                                 <li><span class="command">/clans permissions</span><span class="command-desc">- allows the setting of clan permissions</span></li>
                                 <li><span class="command">/clans vault</span><span class="command-desc">- opens up the clans vault</span></li>
+                                <li><span class="command">/clans description (description)</span><span class="command-desc">- sets the clan description</span></li>
+                                <li><span class="command">/clans top [page]</span><span class="command-desc">- shows clan leaderboard ranked by kills</span></li>
                             </ul>
                         </div>
 
@@ -959,9 +961,24 @@
                                 <li><span class="placeholder">%mythicclans_total_clans%</span><span class="placeholder-desc">- Total number of clans on server</span></li>
                             </ul>
                         </div>
+                        <div class="command-category">
+                            <h4 class="category-title">Clan Description</h4>
+                            <ul class="placeholder-list">
+                                <li><span class="placeholder">%mythicclans_clan_description%</span><span class="placeholder-desc">- Clan description text</span></li>
+                                <li><span class="placeholder">%mythicclans_clan_desc%</span><span class="placeholder-desc">- Clan description (short version)</span></li>
+                                <li><span class="placeholder">%mythicclans_can_set_description%</span><span class="placeholder-desc">- true/false if player can set description</span></li>
+                            </ul>
+                        </div>
+                        <div class="command-category">
+                            <h4 class="category-title">Kill Statistics & Leaderboard</h4>
+                            <ul class="placeholder-list">
+                                <li><span class="placeholder">%mythicclans_clan_kills%</span><span class="placeholder-desc">- Total clan kills</span></li>
+                                <li><span class="placeholder">%mythicclans_clan_total_kills%</span><span class="placeholder-desc">- Total clan kills (alternative)</span></li>
+                            </ul>
+                        </div>
                         <div style="margin-top: 30px; padding: 20px; background: rgba(25, 118, 210, 0.1); border: 1px solid rgba(25, 118, 210, 0.3); border-radius: 10px;">
                             <h4 style="color: var(--accent); margin-bottom: 10px; font-size: 1rem;">🎨 PlaceholderAPI Integration</h4>
-                            <p style="color: var(--text-muted); font-size: 0.9rem; line-height: 1.5;">48+ placeholders for complete integration with scoreboards, chat, GUIs, and more. Perfect for clan displays and server management systems!</p>
+                            <p style="color: var(--text-muted); font-size: 0.9rem; line-height: 1.5;">53+ placeholders for complete integration with scoreboards, chat, GUIs, and more. Perfect for clan displays and server management systems!</p>
                         </div>
                     </div>
                 </div>
@@ -1069,12 +1086,12 @@
         // Add pulse animation
         const style = document.createElement('style');
         style.textContent = `
-                    @keyframes pulse {
-                        0% { transform: scale(1); }
-                        50% { transform: scale(1.05); }
-                        100% { transform: scale(1); }
-                    }
-                `;
+                        @keyframes pulse {
+                            0% { transform: scale(1); }
+                            50% { transform: scale(1.05); }
+                            100% { transform: scale(1); }
+                        }
+                    `;
         document.head.appendChild(style);
     </script>
 </body>
